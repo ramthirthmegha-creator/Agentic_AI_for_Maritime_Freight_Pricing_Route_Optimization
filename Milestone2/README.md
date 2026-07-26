@@ -133,7 +133,7 @@ Click the **key icon 🔑** in the left sidebar and add each of these, toggling 
   <sub>Creating a new user, confirming a deletion, and unlocking a locked account.</sub><br><br>
 
   <b>Triggered Account Lockout</b><br>
-  <img src="screenshots/lockout_message.png" width="500"><br>
+  <img src="screenshots/Lockout_message.png" width="500"><br>
   <sub>The temporary lockout message shown after 3 consecutive failed login attempts.</sub><br><br>
 
   <b>OTP Resend Cooldown</b><br>
