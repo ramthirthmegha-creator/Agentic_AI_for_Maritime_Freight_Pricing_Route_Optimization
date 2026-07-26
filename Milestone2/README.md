@@ -113,11 +113,11 @@ Click the **key icon 🔑** in the left sidebar and add each of these, toggling 
 <p align="center">
 
   <b>Home Page</b><br>
-  <img src="screenshots/home.png" width="500"><br>
+  <img src="screenshots/Home_page.png" width="500"><br>
   <sub>KPI overview — quotes generated, active shipments, carriers tracked, ML models trained, registered users.</sub><br><br>
 
   <b>AI Copilot</b><br>
-  <img src="screenshots/ai_copilot.png" width="500"><br>
+  <img src="screenshots/AI_copilot.png" width="500"><br>
   <sub>A freight question answered by the Qwen2.5-3B Copilot, synthesizing all 3 agents' data.</sub><br><br>
 
   <b>ML Pricing Calculator</b><br>
