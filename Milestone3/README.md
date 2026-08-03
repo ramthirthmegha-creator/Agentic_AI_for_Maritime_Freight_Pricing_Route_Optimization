@@ -275,22 +275,3 @@ Open the generated Ngrok URL in your browser and start using the Intelligent Fre
 
 📷 Screenshots
 
-Add screenshots of the following sections:
-
-screenshots/
-
-├── login_page.png
-├── signup_page.png
-├── forgot_password.png
-├── otp_verification.png
-├── dashboard.png
-├── admin_dashboard.png
-├── freight_quote_generation.png
-├── ai_copilot.png
-├── ml_predictions.png
-├── rag_query.png
-├── knowledge_base.png
-├── ngrok_deployment.png
-└── system_architecture.png
-
-Note: Replace the placeholder images with actual screenshots captured from your application during execution.
