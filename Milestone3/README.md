@@ -279,19 +279,23 @@ Open the generated Ngrok URL in your browser and start using the Intelligent Fre
 
   <b>RAG_pipeline</b><br>
   <img src="screenshots/RAG_pipeline.png" width="500"><br>
-  <sub>Rag</sub><br><br>
+  <sub>Expanded the RAG knowledge base from 25 curated documents to 363 total documents using web scraping and auto-generated logistics resources.
+Included shipping rules, customs profiles, port information, HS code guides, and trade-corridor documents to improve retrieval quality.</sub><br><br>
 
   <b>RAG_pipeline_validation</b><br>
   <img src="screenshots/RAG_pipeline_validation.png" width="500"><br>
-  <sub>A freight question answered by the Qwen2.5-3B Copilot, synthesizing all 3 agents' data.</sub><br><br>
+  <sub>Scraped 98 logistics-related web pages and automatically discovered and processed 139 PDF documents.
+Successfully extracted and stored 141 text documents, creating a rich dataset for the RAG pipeline.</sub><br><br>
 
   <b>knowledge_base_summary</b><br>
   <img src="screenshots/knowledge_base_summary.png" width="500"><br>
-  <sub>Agent 1 predicting a freight cost from sample distance, weight, and congestion inputs.</sub><br><br>
+  <sub>Indexed 363 documents into a vector database, generating 18,212 text chunks for semantic search.
+Achieved a 92.5% retrieval accuracy and enabled natural-language question answering on freight and logistics topics.</sub><br><br>
 
-  <b>web_scarping</b><br>
-  <img src="screenshots/web_scarping" width="500"><br>
-  <sub>R²/RMSE and ROC-AUC metrics for all 3 agents, pulled from the ml_models table.</sub>
+  <b>web_scraping</b><br>
+  <img src="screenshots/web_scraping" width="500"><br>
+  <sub>Evaluated the system using 40 test queries, with 37 successful responses and only 3 failures.
+The final RAG system achieved a 92.5% pass rate, demonstrating reliable document retrieval and response generation.</sub>
 
 </p>
 
