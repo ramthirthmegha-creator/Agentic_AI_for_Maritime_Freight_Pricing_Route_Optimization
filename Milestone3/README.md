@@ -275,3 +275,23 @@ Open the generated Ngrok URL in your browser and start using the Intelligent Fre
 
 📷 Screenshots
 
+<p align="center">
+
+  <b>RAG_pipeline</b><br>
+  <img src="screenshots/RAG_pipeline.png" width="500"><br>
+  <sub>Rag</sub><br><br>
+
+  <b>RAG_pipeline_validation</b><br>
+  <img src="screenshots/RAG_pipeline_validation.png" width="500"><br>
+  <sub>A freight question answered by the Qwen2.5-3B Copilot, synthesizing all 3 agents' data.</sub><br><br>
+
+  <b>knowledge_base_summary</b><br>
+  <img src="screenshots/knowledge_base_summary.png" width="500"><br>
+  <sub>Agent 1 predicting a freight cost from sample distance, weight, and congestion inputs.</sub><br><br>
+
+  <b>web_scarping</b><br>
+  <img src="screenshots/web_scarping" width="500"><br>
+  <sub>R²/RMSE and ROC-AUC metrics for all 3 agents, pulled from the ml_models table.</sub>
+
+</p>
+
