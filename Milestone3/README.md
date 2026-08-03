@@ -293,7 +293,7 @@ Successfully extracted and stored 141 text documents, creating a rich dataset fo
 Achieved a 92.5% retrieval accuracy and enabled natural-language question answering on freight and logistics topics.</sub><br><br>
 
   <b>web_scraping</b><br>
-  <img src="screenshots/web_scraping" width="500"><br>
+  <img src="screenshots/web_scraping.png" width="500"><br>
   <sub>Evaluated the system using 40 test queries, with 37 successful responses and only 3 failures.
 The final RAG system achieved a 92.5% pass rate, demonstrating reliable document retrieval and response generation.</sub>
 
