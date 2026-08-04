@@ -245,7 +245,7 @@ Create the following secrets inside **Google Colab → Secrets**.
 
 ## 🌐 Web Scraping Module
 
-![Web Scraping](screenshots/web%20scraping.png)
+![Web_Scraping](screenshots/web_scraping.png)
 
 The web scraping module collects relevant logistics information from web sources and extracts useful data required for building the knowledge base.
 
