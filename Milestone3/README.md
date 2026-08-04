@@ -251,19 +251,19 @@ The web scraping module collects relevant logistics information from web sources
 
 ## 📚 Knowledge Base Summary
 
-![Knowledge Base Summary](screenshots/knowledge%20base%20summary.png)
+![Knowledge_Base_Summary](screenshots/knowledge_base_summary.png)
 
 The knowledge base contains processed logistics documents and extracted information used by the RAG system for retrieving relevant context.
 
 ## 🧠 RAG Pipeline
 
-![RAG Pipeline](screenshots/RAG%20pipeline.png)
+![RAG_Pipeline](screenshots/RAG_pipeline.png)
 
 The RAG pipeline demonstrates the complete workflow of document retrieval, similarity search, context extraction, and response generation using the LLM.
 
 ## ✅ RAG Pipeline Validation
 
-![RAG Pipeline Validation](screenshots/RAG%20pipeline%20validation.png)
+![RAG_Pipeline_Validation](screenshots/RAG_pipeline_validation.png)
 
 The **RAG Pipeline Validation** chart shows the evaluation results of the RAG system by representing successful (Pass) and unsuccessful (Fail) validation cases.
 
