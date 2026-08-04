@@ -1,137 +1,128 @@
-🚚 Intelligent Freight Quote Generation System (IFQGS)
+# 🚚 Intelligent Freight Quote Generation System (IFQGS)
 
-Infosys Springboard Internship 7.0 – AI Internship Project
+> **Infosys Springboard Internship 7.0 – AI Internship Project**  
+> **Domain:** Artificial Intelligence | Machine Learning | Large Language Models | Retrieval-Augmented Generation (RAG)
 
-Domain: Artificial Intelligence | Machine Learning | Large Language Models | Retrieval-Augmented Generation (RAG)
+---
 
-📖 Project Overview
+# 📖 Project Overview
 
-The Intelligent Freight Quote Generation System (IFQGS) is an AI-powered logistics assistant designed to simplify freight quotation, shipment analysis, and logistics decision-making through the integration of Machine Learning, Large Language Models (LLMs), and Retrieval-Augmented Generation (RAG).
+The **Intelligent Freight Quote Generation System (IFQGS)** is an AI-powered logistics assistant designed to simplify freight quotation, shipment analysis, and logistics decision-making through the integration of **Machine Learning**, **Large Language Models (LLMs)**, and **Retrieval-Augmented Generation (RAG)**.
 
-The project was developed in three progressive milestones. The first milestone focuses on secure user authentication, the second milestone introduces AI-powered freight analysis with machine learning models and an intelligent LLM assistant, and the third milestone integrates a RAG pipeline that enables the system to answer logistics-related queries using information retrieved from a custom knowledge base instead of relying solely on the language model.
+The project was developed in **three progressive milestones**. The first milestone focuses on secure user authentication, the second milestone introduces AI-powered freight analysis using machine learning models and an intelligent LLM assistant, and the third milestone integrates a **RAG pipeline** that enables the system to answer logistics-related queries using information retrieved from a custom knowledge base instead of relying solely on the language model.
 
-The system is deployed using Google Colab, Streamlit, and Ngrok, allowing users to securely access the application from any browser without requiring local installation.
+The system is deployed using **Google Colab**, **Streamlit**, and **Ngrok**, allowing users to securely access the application through a web browser without requiring local installation.
 
-✅ Milestone 1 Features
-🔐 Secure User Authentication
+# ✅ Milestone 1 Features
 
+### 🔐 Secure User Authentication
 Provides a complete Login, Signup, Forgot Password, and Logout system with secure session management using JWT tokens.
 
-📧 Email OTP Verification
-
+### 📧 Email OTP Verification
 Verifies user identity by sending a One-Time Password (OTP) through Gmail SMTP during registration and password reset.
 
-🔑 JWT Authentication
-
+### 🔑 JWT Authentication
 Uses JSON Web Tokens to securely manage authenticated sessions and protect user access.
 
-🔒 Password Encryption
-
+### 🔒 Password Encryption
 Stores passwords securely using BCrypt hashing instead of plain text.
 
-❓ Security Questions
-
+### ❓ Security Questions
 Allows users to reset passwords using predefined security questions as an additional authentication layer.
 
-💾 SQLite Database
-
+### 💾 SQLite Database
 Stores user information, credentials, and authentication data locally using SQLite.
 
-🌐 Streamlit Web Interface
-
+### 🌐 Streamlit Web Interface
 Provides a clean and responsive user interface accessible directly from the browser.
 
-🌍 Public Deployment using Ngrok
-
+### 🌍 Public Deployment using Ngrok
 Exposes the Streamlit application running on Google Colab to the internet using Ngrok.
 
-✅ Milestone 2 Features
-🤖 AI Freight Quote Copilot
+---
 
-Integrates the Qwen 2.5 Large Language Model to assist users with logistics-related questions and freight quote generation.
+# ✅ Milestone 2 Features
 
-📊 Machine Learning Price Prediction
+### 🤖 AI Freight Quote Copilot
+Integrates the Qwen2.5-3B-Instruct Large Language Model to assist users with logistics-related questions and freight quote generation.
 
-Predicts freight pricing using multiple regression algorithms trained on logistics datasets.
+### 🚛 Agent 1 – Freight Pricing Agent
+Predicts transportation costs using multiple regression algorithms and selects the best-performing model for accurate freight pricing.
 
-🚛 Route Delay Prediction
+### 🛣️ Agent 2 – Route Delay & Risk Prediction Agent
+Predicts shipment delays and transportation risks using classification algorithms to improve delivery planning.
 
-Uses classification algorithms to estimate shipment delays and transportation risks.
+### ✅ Agent 3 – Carrier Compliance Agent
+Evaluates carrier reliability and compliance using historical logistics data to recommend trustworthy transport providers.
 
-✅ Carrier Compliance Analysis
+### 📈 Multi-Model Comparison
+Compares multiple machine learning algorithms and automatically selects the best-performing model based on evaluation metrics.
 
-Evaluates carrier reliability and compliance using machine learning models trained on logistics data.
-
-📈 Multi-Model Comparison
-
-Compares multiple ML algorithms and automatically selects the best-performing model based on evaluation metrics.
-
-🔐 Advanced Security Engine
-
+### 🔐 Advanced Security Engine
 Implements progressive account lockout, OTP resend cooldown, password strength validation, and enhanced authentication.
 
-👨‍💼 Administrator Dashboard
-
+### 👨‍💼 Administrator Dashboard
 Allows administrators to manage users, unlock accounts, and monitor authentication activities.
 
-⚡ Optimized LLM Loading
-
+### ⚡ Optimized LLM Loading
 Uses 4-bit quantization and GPU acceleration to reduce memory usage and improve inference speed.
 
-✅ Milestone 3 (RAG) Features
-📚 Retrieval-Augmented Generation (RAG)
 
+# ✅ Milestone 3 (RAG) Features
+
+### 📚 Retrieval-Augmented Generation (RAG)
 Enhances the LLM by retrieving relevant information from a custom logistics knowledge base before generating responses.
 
-📄 PDF Knowledge Base
-
+### 📄 PDF Knowledge Base
 Indexes logistics manuals, freight documents, shipping guidelines, and company documents for intelligent retrieval.
 
-🔎 Semantic Search
-
+### 🔎 Semantic Search
 Uses sentence embeddings and vector similarity search to identify the most relevant document chunks.
 
-🧠 Context-Aware Response Generation
-
+### 🧠 Context-Aware Response Generation
 Combines retrieved document context with the LLM to produce accurate, grounded, and relevant answers.
 
-📦 FAISS Vector Database
-
+### 📦 FAISS Vector Database
 Stores vector embeddings for efficient similarity search across large document collections.
 
-📑 Automatic Document Chunking
-
+### 📑 Automatic Document Chunking
 Splits large PDF documents into smaller text chunks to improve retrieval accuracy.
 
-💬 Intelligent Logistics Assistant
-
+### 💬 Intelligent Logistics Assistant
 Answers logistics-related queries using both retrieved knowledge and the reasoning capabilities of the LLM.
 
-🎯 Reduced Hallucinations
-
+### 🎯 Reduced Hallucinations
 Minimizes incorrect or fabricated responses by grounding answers in trusted documents.
 
-💻 Technologies Used
-Category	Technologies
-Programming Language	Python 3
-Frontend	Streamlit
-Backend	Python
-Authentication	JWT, BCrypt
-Database	SQLite
-Machine Learning	Scikit-learn
-Deep Learning	PyTorch
-Large Language Model	Qwen2.5-3B-Instruct
-RAG Framework	LangChain
-Embedding Model	Sentence Transformers
-Vector Database	FAISS
-Document Processing	PyPDF2
-Deployment	Google Colab
-Public Access	Ngrok
-Dataset Source	Kaggle
-Model Repository	Hugging Face
-Email Service	Gmail SMTP
-Version Control	Git & GitHub
-🧠 RAG Architecture
+---
+
+# 💻 Technologies Used
+
+| Category | Technologies |
+|----------|--------------|
+| Programming Language | Python 3 |
+| Frontend | Streamlit |
+| Backend | Python |
+| Authentication | JWT, BCrypt |
+| Database | SQLite |
+| Machine Learning | Scikit-learn |
+| Deep Learning | PyTorch |
+| Large Language Model | Qwen2.5-3B-Instruct |
+| RAG Framework | LangChain |
+| Embedding Model | Sentence Transformers |
+| Vector Database | FAISS |
+| Document Processing | PyPDF2 |
+| Deployment | Google Colab |
+| Public Access | Ngrok |
+| Dataset Source | Kaggle |
+| Model Repository | Hugging Face |
+| Email Service | Gmail SMTP |
+| Version Control | Git & GitHub |
+
+
+# 🧠 RAG Architecture
+
+```text
                     PDF Documents
                           │
                           ▼
@@ -155,147 +146,125 @@ Version Control	Git & GitHub
         Relevant Context Retrieved
                  │
                  ▼
-      Qwen 2.5 Large Language Model
+      Qwen2.5-3B-Instruct LLM
                  │
                  ▼
           Intelligent Final Response
-Explanation
-Logistics PDF documents are uploaded into the system.
-Documents are divided into smaller chunks.
-Sentence embeddings are generated for each chunk.
-Embeddings are stored inside a FAISS vector database.
-User queries are converted into embeddings.
-FAISS retrieves the most relevant document chunks.
-Retrieved context is combined with the user query.
-The Qwen LLM generates an accurate, context-aware response.
-📂 Project Structure
-IFQGS/
-│
-├── Milestone1/
-│   ├── app.py
-│   ├── auth.py
-│   ├── database.py
-│   ├── utils.py
-│   ├── config.py
-│   ├── requirements.txt
-│   └── README.md
-│
-├── Milestone2/
-│   ├── app.py
-│   ├── llm_engine.py
-│   ├── ml_models.py
-│   ├── admin.py
-│   ├── config.py
-│   ├── requirements.txt
-│   └── README.md
-│
-├── Milestone3/
-│   ├── rag_pipeline.py
-│   ├── document_loader.py
-│   ├── embeddings.py
-│   ├── vector_store.py
-│   ├── query_engine.py
-│   ├── knowledge_base/
-│   ├── requirements.txt
-│   └── README.md
-│
-├── screenshots/
-├── README.md
-└── requirements.txt
-🔑 Google Colab Secrets
+```
 
-Create the following secrets inside Google Colab → Secrets.
 
-Secret Name	Description
-NGROK_AUTHTOKEN	Ngrok authentication token
-HF_TOKEN	Hugging Face access token
-EMAIL_ADDRESS	Gmail address
-EMAIL_PASSWORD	Gmail App Password
-JWT_SECRET	Secret key for JWT authentication
-KAGGLE_USERNAME	Kaggle username
-KAGGLE_KEY	Kaggle API key
-🌐 Ngrok Setup (5 Steps)
-Create an account on the Ngrok website.
-Verify your email address.
-Copy your Ngrok Authtoken from the dashboard.
-Save the token as NGROK_AUTHTOKEN in Google Colab Secrets.
-Start Ngrok in the notebook to obtain the public Streamlit URL.
-📊 Kaggle API Setup (5 Steps)
-Create or log in to your Kaggle account.
-Open Account Settings.
-Click Create New API Token.
-Download the kaggle.json file.
-Save the username and API key in Google Colab Secrets.
-🤗 Hugging Face Token Setup (5 Steps)
-Create a Hugging Face account.
-Open Settings → Access Tokens.
-Create a new Read access token.
-Copy the generated token.
-Store it as HF_TOKEN in Google Colab Secrets.
-📧 Gmail App Password Setup (5 Steps)
-Enable Two-Factor Authentication for your Google account.
-Open Google Account → Security.
-Select App Passwords.
-Generate a password for Mail.
-Save the generated 16-character password as EMAIL_PASSWORD in Google Colab Secrets.
-▶️ How to Run the Project
-Step 1
+## 📖 RAG Architecture Explanation
 
-Clone the repository.
+1. Logistics PDF documents are uploaded into the system.
+2. Documents are divided into smaller chunks for efficient processing.
+3. Sentence embeddings are generated for each text chunk.
+4. The embeddings are stored inside a **FAISS Vector Database**.
+5. User queries are converted into vector embeddings using the same embedding model.
+6. FAISS performs similarity search to retrieve the most relevant document chunks.
+7. The retrieved context is combined with the user's query.
+8. The **Qwen2.5-3B-Instruct** Large Language Model generates an accurate, context-aware response.
 
-git clone <repository-url>
-Step 2
 
-Open the project notebook in Google Colab.
+# 🔑 Google Colab Secrets
 
-Step 3
+Create the following secrets inside **Google Colab → Secrets**.
 
-Add all required secrets to Google Colab.
+| Secret Name | Description |
+|-------------|-------------|
+| `NGROK_AUTHTOKEN` | Ngrok authentication token |
+| `HF_TOKEN` | Hugging Face access token |
+| `EMAIL_ADDRESS` | Gmail address |
+| `EMAIL_PASSWORD` | Gmail App Password |
+| `JWT_SECRET` | Secret key for JWT authentication |
+| `KAGGLE_USERNAME` | Kaggle username |
+| `KAGGLE_KEY` | Kaggle API key |
 
-Step 4
+---
 
-Install the required Python libraries.
+# 🌐 Ngrok Setup (5 Steps)
 
-pip install -r requirements.txt
-Step 5
+1. Create an account on the **Ngrok** website.
+2. Verify your email address.
+3. Copy your **Ngrok Authtoken** from the dashboard.
+4. Save the token as `NGROK_AUTHTOKEN` in **Google Colab Secrets**.
+5. Start Ngrok in the notebook to obtain the public **Streamlit URL**.
 
-Run all notebook cells sequentially.
+---
 
-Step 6
+# 📊 Kaggle API Setup (5 Steps)
 
-Authenticate Ngrok to expose the Streamlit application.
+1. Create or log in to your **Kaggle** account.
+2. Open **Account Settings**.
+3. Click **Create New API Token**.
+4. Download the `kaggle.json` file.
+5. Save the **Kaggle Username** and **API Key** in **Google Colab Secrets**.
 
-Step 7
+---
 
-Launch the Streamlit application.
+# 🤗 Hugging Face Token Setup (5 Steps)
 
-Step 8
+1. Create a **Hugging Face** account.
+2. Open **Settings → Access Tokens**.
+3. Create a new **Read** access token.
+4. Copy the generated token.
+5. Store it as `HF_TOKEN` in **Google Colab Secrets**.
 
-Open the generated Ngrok URL in your browser and start using the Intelligent Freight Quote Generation System.
+---
 
-📷 Screenshots
+# 📧 Gmail App Password Setup (5 Steps)
 
-<p align="center">
+1. Enable **Two-Factor Authentication (2FA)** for your Google account.
+2. Open **Google Account → Security**.
+3. Select **App Passwords**.
+4. Generate an app password for **Mail**.
+5. Save the generated 16-character password as `EMAIL_PASSWORD` in **Google Colab Secrets**.
 
-  <b>RAG_pipeline</b><br>
-  <img src="screenshots/RAG_pipeline.png" width="500"><br>
-  <sub>Expanded the RAG knowledge base from 25 curated documents to 363 total documents using web scraping and auto-generated logistics resources.
-Included shipping rules, customs profiles, port information, HS code guides, and trade-corridor documents to improve retrieval quality.</sub><br><br>
+---
 
-  <b>RAG_pipeline_validation</b><br>
-  <img src="screenshots/RAG_pipeline_validation.png" width="500"><br>
-  <sub>Scraped 98 logistics-related web pages and automatically discovered and processed 139 PDF documents.
-Successfully extracted and stored 141 text documents, creating a rich dataset for the RAG pipeline.</sub><br><br>
+# ▶️ How to Run the Project
 
-  <b>knowledge_base_summary</b><br>
-  <img src="screenshots/knowledge_base_summary.png" width="500"><br>
-  <sub>Indexed 363 documents into a vector database, generating 18,212 text chunks for semantic search.
-Achieved a 92.5% retrieval accuracy and enabled natural-language question answering on freight and logistics topics.</sub><br><br>
+1. Open the project notebook (`.ipynb`) in Google Colab.
+2. Add all required secrets (`NGROK_AUTHTOKEN`, `HF_TOKEN`, `EMAIL_ADDRESS`, `EMAIL_PASSWORD`, `JWT_SECRET`, `KAGGLE_USERNAME`, and `KAGGLE_KEY`) in **Google Colab → Secrets**.
+3. Run all notebook cells sequentially to install the required libraries, load the models, and start the application.
+4. Start the Ngrok tunnel to generate a public URL for the Streamlit application.
+5. Open the generated Ngrok URL in your web browser to access the **Intelligent Freight Quote Generation System (IFQGS)**.
 
-  <b>web_scraping</b><br>
-  <img src="screenshots/web_scraping.png" width="500"><br>
-  <sub>Evaluated the system using 40 test queries, with 37 successful responses and only 3 failures.
-The final RAG system achieved a 92.5% pass rate, demonstrating reliable document retrieval and response generation.</sub>
 
-</p>
+# 👥 Team Member Contributions
 
+| Team Member | Contribution |
+|------------|--------------|
+| Member 1 | Designed and developed the Streamlit user interface (UI) for the application, ensuring a responsive and user-friendly experience. |
+| Member 2 | Implemented the authentication system, including Login, Signup, Email OTP verification, JWT authentication, and password recovery features. |
+| Member 3 | Developed and integrated the AI Agents for freight pricing, route delay prediction, and carrier compliance analysis using machine learning models. |
+| Member 4 | Built the Retrieval-Augmented Generation (RAG) pipeline, including PDF processing, document chunking, embeddings, FAISS vector database, and semantic search. |
+| Member 5 | Managed the GitHub repository, project integration, README documentation, testing, and deployment using Google Colab, Streamlit, and Ngrok. |
+
+
+# 📷 Screenshots
+
+## 🌐 Web Scraping Module
+
+![Web Scraping](screenshots/web%20scraping.png)
+
+The web scraping module collects relevant logistics information from web sources and extracts useful data required for building the knowledge base.
+
+## 📚 Knowledge Base Summary
+
+![Knowledge Base Summary](screenshots/knowledge%20base%20summary.png)
+
+The knowledge base contains processed logistics documents and extracted information used by the RAG system for retrieving relevant context.
+
+## 🧠 RAG Pipeline
+
+![RAG Pipeline](screenshots/RAG%20pipeline.png)
+
+The RAG pipeline demonstrates the complete workflow of document retrieval, similarity search, context extraction, and response generation using the LLM.
+
+## ✅ RAG Pipeline Validation
+
+![RAG Pipeline Validation](screenshots/RAG%20pipeline%20validation.png)
+
+The **RAG Pipeline Validation** chart shows the evaluation results of the RAG system by representing successful (Pass) and unsuccessful (Fail) validation cases.
+
+It verifies whether the system can retrieve relevant knowledge from the database and generate accurate, context-aware responses.
