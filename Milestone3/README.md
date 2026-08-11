@@ -1,13 +1,12 @@
-# 🚚 Intelligent Freight Quote Generation System (IFQGS)
+# 🚚 Agentic AI for Maritime Freight Pricing & Route Optimization
 
-> **Infosys Springboard Internship 7.0 – AI Internship Project**  
 > **Domain:** Artificial Intelligence | Machine Learning | Large Language Models | Retrieval-Augmented Generation (RAG)
 
 ---
 
 # 📖 Project Overview
 
-The **Intelligent Freight Quote Generation System (IFQGS)** is an AI-powered logistics assistant designed to simplify freight quotation, shipment analysis, and logistics decision-making through the integration of **Machine Learning**, **Large Language Models (LLMs)**, and **Retrieval-Augmented Generation (RAG)**.
+The **Agentic AI for Maritime Freight Pricing & Route Optimization** is an AI-powered logistics assistant designed to simplify freight quotation, shipment analysis, and logistics decision-making through the integration of **Machine Learning**, **Large Language Models (LLMs)**, and **Retrieval-Augmented Generation (RAG)**.
 
 The project was developed in **three progressive milestones**. The first milestone focuses on secure user authentication, the second milestone introduces AI-powered freight analysis using machine learning models and an intelligent LLM assistant, and the third milestone integrates a **RAG pipeline** that enables the system to answer logistics-related queries using information retrieved from a custom knowledge base instead of relying solely on the language model.
 
