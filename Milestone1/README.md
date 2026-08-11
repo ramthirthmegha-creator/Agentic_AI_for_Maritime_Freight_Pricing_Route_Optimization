@@ -1,7 +1,5 @@
 # Milestone 1 — User Authentication Module
 
-**Infosys Springboard Internship 7.0 · Batch 1**
-
 ## What This Milestone Is
 
 This milestone implements a complete **Login · Signup · Forgot Password** authentication
