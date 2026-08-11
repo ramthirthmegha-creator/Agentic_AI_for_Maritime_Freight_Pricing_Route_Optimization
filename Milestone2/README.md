@@ -1,6 +1,5 @@
 # Milestone 2 — FreightQuote AI Platform
 
-**Infosys Springboard Internship 7.0 · Batch 1**
 **Full-Stack AI/ML Integration & Advanced Security Engine**
 
 ## What Milestone 2 Adds on Top of Milestone 1
