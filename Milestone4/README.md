@@ -460,7 +460,7 @@ freight_app/
 *Secure sign-in screen with role-based demo credentials.*
 
 ### Admin Dashboard
-![Admin_Dashboard](./screenshots/admin_dashboard.jpeg)
+![Admin Dashboard](https://raw.githubusercontent.com/ramthirthmegha-creator/Agentic_AI_for_Maritime_Freight_Pricing_Route_Optimization/main/Milestone4/screenshots/admin_dashboard.jpeg)
 *Command-center overview of shipments, quotes, and platform-wide KPIs.*
 
 ### AI Copilot
