@@ -456,15 +456,15 @@ freight_app/
 ## 📸 Application Screenshots
 
 ### Login & Access
-![Login_Screen](./screenshots/login.jpeg)
+![Login Screen](./screenshots/login.jpeg)
 *Secure sign-in screen with role-based demo credentials.*
 
 ### Admin Dashboard
-<img src="./screenshots/admin_dashboard.jpeg" alt="Admin Dashboard" width="900">
+![Admin Dashboard](./screenshots/admin_dashboard.jpeg)
 *Command-center overview of shipments, quotes, and platform-wide KPIs.*
 
 ### AI Copilot
-![AI_Copilot](./screenshots/ai_copilot.jpeg)
+![AI Copilot](./screenshots/ai_copilot.jpeg)
 *Grounded chat assistant answering questions using live freight data.*
 
 ### Route Optimization (Agent 1)
