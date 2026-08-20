@@ -458,63 +458,63 @@ freight_app/
 *Secure sign-in screen with role-based demo credentials.*
 
 ### Admin Dashboard
-![Admin Dashboard](../screenshots/admin_dashboard.jpeg)
+![Admin Dashboard](../screenshots./admin_dashboard.jpeg)
 *Command-center overview of shipments, quotes, and platform-wide KPIs.*
 
 ### AI Copilot
-![AI Copilot](../screenshots/ai_copilot.jpeg)
+![AI Copilot](../screenshots./ai_copilot.jpeg)
 *Grounded chat assistant answering questions using live freight data.*
 
 ### Route Optimization (Agent 1)
-![Route Optimization](../screenshots/agent1_route.jpeg)
+![Route Optimization](../screenshots./agent1_route.jpeg)
 *Interactive port-to-port route mapping and optimization analysis.*
 
 ### Dynamic Freight Pricing (Agent 2)
-![Freight Pricing](../screenshots/agent2_pricing.jpeg)
+![Freight Pricing](../screenshots./agent2_pricing.jpeg)
 *Real-time dynamic pricing engine for freight quotes.*
 
 ### Carrier Performance (Agent 3)
-![Carrier Performance](../screenshots/agent3_carrier.jpeg)
+![Carrier Performance](../screenshots./agent3_carrier.jpeg)
 *Carrier capacity, reliability, and performance analytics.*
 
 ### Weather & Freight Risk (Agent 4)
-![Weather Risk](./screenshots/agent4_weather.jpeg)
+![Weather Risk](./screenshots./agent4_weather.jpeg)
 *Live port weather overlays and shipment risk scoring.*
 
 ### Margin Predictor (Agent 5)
-![Margin Predictor](./screenshots/agent5_margin.jpeg)
+![Margin Predictor](./screenshots./agent5_margin.jpeg)
 *Predicted yield and margin outlook across active shipments.*
 
 ### Customs & Tariffs (Agent 6)
-![Customs Tariffs](./screenshots/agent6_customs.jpeg)
+![Customs Tariffs](./screenshots./agent6_customs.jpeg)
 *Customs, tax, and compliance guidance for cross-border shipments.*
 
 ### Digital Bill of Lading (Agent 7)
-![Bill of Lading](./screenshots/agent7_docs.jpeg)
+![Bill of Lading](./screenshots./agent7_docs.jpeg)
 *Automated generation and management of shipping documents.*
 
 ### Alerts & Translation (Agent 8)
-![Alerts and Translation](./screenshots/agent8_alerts.jpeg)
+![Alerts and Translation](./screenshots./agent8_alerts.jpeg)
 *Real-time incident alerts alongside 20+ language translation support.*
 
 ### PDF SOP / RAG Studio (Agent 9)
-![PDF RAG Studio](./screenshots/agent9_pdf_rag.jpeg)
+![PDF RAG Studio](./screenshots./agent9_pdf_rag.jpeg)
 *Upload and query customs/SOP PDFs using retrieval-augmented search.*
 
 ### Anomaly Scanner
-![Anomaly Scanner](./screenshots/anomaly_scanner.jpeg)
+![Anomaly Scanner](./screenshots./anomaly_scanner.jpeg)
 *Isolation Forest–based detection of anomalies across shipments and ports.*
 
 ### Digital Twin Simulation
-![Digital Twin](./screenshots/digital_twin.jpeg)
+![Digital Twin](./screenshots./digital_twin.jpeg)
 *Monte Carlo trade-stress simulation of the global freight network.*
 
 ### Knowledge Graph
-![Knowledge Graph](./screenshots/knowledge_graph.jpeg)
+![Knowledge Graph](./screenshots./knowledge_graph.jpeg)
 *Interactive graph linking ports, carriers, shipments, and documents.*
 
 ### Data Feed Center
-![Data Feed Center](./screenshots/data_feed_center.jpeg)
+![Data Feed Center](./screenshots./data_feed_center.jpeg)
 *Manual and bulk CSV data ingestion into the live database.*
 
 ---
