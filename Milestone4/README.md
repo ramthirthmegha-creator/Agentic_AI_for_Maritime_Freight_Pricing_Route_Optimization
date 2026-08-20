@@ -460,15 +460,15 @@ freight_app/
 *Secure sign-in screen with role-based demo credentials.*
 
 ### Admin Dashboard
-![Admin Dashboard](./screenshots/admin_dashboard.jpeg)
+![Admin Dashboard](/screenshots/admin_dashboard.jpeg)
 *Command-center overview of shipments, quotes, and platform-wide KPIs.*
 
 ### AI Copilot
-![AI Copilot](./screenshots/ai_copilot.jpeg)
+![AI Copilot](/screenshots/ai_copilot.jpeg)
 *Grounded chat assistant answering questions using live freight data.*
 
 ### Route Optimization (Agent 1)
-![Route Optimization](./screenshots/agent1_route.jpeg)
+![Route Optimization](/screenshots/agent1_route.jpeg)
 *Interactive port-to-port route mapping and optimization analysis.*
 
 ### Dynamic Freight Pricing (Agent 2)
