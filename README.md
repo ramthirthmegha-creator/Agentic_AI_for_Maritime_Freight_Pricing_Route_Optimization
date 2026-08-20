@@ -240,7 +240,7 @@ A sidebar status panel — **"🤖 Neural AI Model & GPU Status"** — shows liv
 
 ## Admin Dashboard
 
-![Admin Dashboard](docs/screenshots/admin_dashboard.jpeg)
+![Admin Dashboard](docs/screenshots./admin_dashboard.jpeg)
 
 **Admin-only capabilities:**
 - User management & role assignment
@@ -254,15 +254,15 @@ A sidebar status panel — **"🤖 Neural AI Model & GPU Status"** — shows liv
 
 | Login Screen | Main Dashboard |
 |---|---|
-| ![Login](docs/screenshots/login.jpeg) | ![Dashboard](docs/screenshots/dashboard.jpeg) |
+| ![Login](docs/screenshots./login.jpeg) | ![Dashboard](docs/screenshots./dashboard.jpeg) |
 
 | Agent Tab Example | AI Copilot |
 |---|---|
-| ![Agent](docs/screenshots/agent-example.jpeg) | ![Copilot](docs/screenshots/copilot-chat.jpeg) |
+| ![Agent](docs/screenshots./agent-example.jpeg) | ![Copilot](docs/screenshots./copilot-chat.jpeg) |
 
 | Admin Dashboard |
 |---|
-| ![Admin](docs/screenshots/admin_dashboard.jpeg) |
+| ![Admin](docs/screenshots./admin_dashboard.jpeg) |
 
 
 
