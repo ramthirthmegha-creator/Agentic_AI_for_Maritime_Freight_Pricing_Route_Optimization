@@ -456,7 +456,7 @@ freight_app/
 ## 📸 Application Screenshots
 
 ### Login & Access
-![Login Screen](/screenshots/login.jpeg)
+![Login Screen](/screenshots/login.png)
 *Secure sign-in screen with role-based demo credentials.*
 
 ### Admin Dashboard
