@@ -48,7 +48,7 @@ FreightQuote AI is an agentic decision-support platform for an ocean-freight bro
 
 The platform follows a four-layer agentic pattern:
 
-![Architecture Diagram](docs/architecture-diagram.jpeg)
+![Architecture Diagram](docs/architecture-diagram.png)
 
 **AI Copilot Answer Pipeline:**
 1. `classify_intent()` maps the question to shipment / pricing / weather / customs / carrier domains.
@@ -254,7 +254,7 @@ A sidebar status panel — **"🤖 Neural AI Model & GPU Status"** — shows liv
 
 | Login Screen | Main Dashboard |
 |---|---|
-| ![Login](docs/screenshots./login.png) | ![Dashboard](docs/screenshots./dashboard.jpeg) |
+| ![Login](docs/screenshots./login.png) | 
 
 | Agent Tab Example | AI Copilot |
 |---|---|
