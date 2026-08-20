@@ -454,16 +454,6 @@ freight_app/
 ---
 
 ## 📸 Application Screenshots
-
-<p align="center">
-
-  <b>Login Screen</b><br>
-  <img src="screenshots/login.png" width="500"><br>
-  <sub>Secure sign-in screen with role-based demo credentials.</sub><br><br>
-
-  <b>Admin Dashboard</b><br>
-  <img src="screenshots/admin_dashboard.png" width="500"><br>
-  <sub>A freight question answered by the Qwen2.5-3B Copilot, synthesizing all 3 agents' data.</sub><br><br>### Login & Access
 ![Login Screen](screenshots/login.png)
 *Secure sign-in screen with role-based demo credentials.*
 
