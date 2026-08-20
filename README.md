@@ -258,7 +258,7 @@ A sidebar status panel — **"🤖 Neural AI Model & GPU Status"** — shows liv
 
 | Agent Tab Example | AI Copilot |
 |---|---|
-| ![Agent](docs/screenshots./agent-example.jpeg) | ![Copilot](docs/screenshots./copilot-chat.jpeg) |
+| ![Agent](docs/screenshots./agent-example.jpeg) | ![Copilot](docs/screenshots./copilot-chat.png) |
 
 | Admin Dashboard |
 |---|
