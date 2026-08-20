@@ -454,6 +454,7 @@ freight_app/
 ---
 
 ## 📸 Application Screenshots
+![Login Screen](https://raw.githubusercontent.com/ramthirthmegha-creator/Agentic_AI_for_Maritime_Freight_Pricing_Route_Optimization/main/screenshots/login.png)
 ![Login Screen](screenshots/login.png)
 *Secure sign-in screen with role-based demo credentials.*
 
