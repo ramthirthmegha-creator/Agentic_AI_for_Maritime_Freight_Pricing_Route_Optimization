@@ -252,7 +252,7 @@ A sidebar status panel — **"🤖 Neural AI Model & GPU Status"** — shows liv
 
 ## Screenshots / GIFs
 
-| Login Screen | Main Dashboard |
+| Login Screen | 
 |---|---|
 | ![Login](docs/screenshots./login.png) | 
 
@@ -347,7 +347,7 @@ See [`requirements.txt`](requirements.txt) in the repository root for the full p
 
 ## Demo Video
 
-See [`docs/demo/demo.mp4`](docs/demo.mp4) for the full demo recording.
+See [`docs/demo.mp4`](docs/demo.mp4) for the full demo recording.
 
 ---
 
