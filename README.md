@@ -531,7 +531,7 @@ freight_app/
 ## 📸 Application Screenshots
 
 ### Login & Access
-![Sign In Page](screenshots/sign%20in.png)
+![Sign In Page](docs/screenshots./sign%20in.png)
 *Secure sign-in screen with role-based demo credentials.*
 
 ### OTP Section
