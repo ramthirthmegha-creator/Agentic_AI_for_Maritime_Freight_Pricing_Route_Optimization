@@ -1,372 +1,683 @@
-# Agentic AI for Maritime Freight Pricing and Route Optimization
+# Agentic AI for Maritime Freight Pricing & Route Optimization
+
 ### Codename: FreightQuote AI
 
-*An agentic decision-support copilot for an ocean-freight brokerage — grounded routing, pricing, weather, and compliance answers.*
+**Infosys Springboard Internship — Overall Project README (Milestones 1–4)**
+
+FreightQuote AI is a maritime freight decision-support application that combines multiple AI agents, machine-learning models, document retrieval, route analysis, pricing tools, and an AI Copilot in one Streamlit-based platform.
+
+This is the **single overall README** for the project — it covers everything built across all four milestones, from the first login screen to the final 9-agent integrated platform. Individual milestones aren't kept as separate READMEs; each one is summarized below and then folded into the full documentation that follows.
+
+> 💡 **In simple terms:** think of FreightQuote AI as one dashboard that replaces several spreadsheets and manual lookups a freight broker would normally juggle — pricing a shipment, checking if a carrier is reliable, seeing if a storm will delay a port, and asking a chatbot for answers instead of digging through documents.
 
 ---
 
-## Table of Contents
-- [Program & Team Context](#program--team-context)
-- [Overall Project Explanation](#overall-project-explanation)
-- [The 9 Specialised Agents](#the-9-specialised-agents)
-- [Authentication, OTP & Security](#authentication-otp--security)
-- [Admin Dashboard](#admin-dashboard)
-- [Screenshots / GIFs](#screenshots--gifs)
-- [Installation & Run Instructions](#installation--run-instructions-from-github)
-- [Secrets & Credentials](#secrets--credentials)
-- [requirements.txt](#requirementstxt)
-- [Demo Video](#demo-video)
-- [Known Limitations & Future Scope](#known-limitations--future-scope)
-- [Acknowledgements](#acknowledgements)
+## 🧭 Project Evolution — What Each Milestone Added
+
+The platform was built incrementally. Each milestone added a working layer on top of the last, and the final app (documented in full below) is the sum of all four.
+
+| Milestone | Focus | What Was Delivered |
+|---|---|---|
+| **Milestone 1** | Authentication & Access | Secure sign-in, account registration, and password recovery via Security Question **or** Email OTP (6-digit, time-limited). Formed the entry point for every later milestone. |
+| **Milestone 2** | Core Platform & First Agents | The first working version of the freight platform: Customer & Admin dashboards, and the first 3 AI agents — **Freight Pricing**, **Route/Weather Risk**, and **Carrier Audit** — plus an early AI Copilot. |
+| **Milestone 3** | RAG Knowledge Center | Added a Retrieval-Augmented Generation pipeline: 50+ generated logistics SOP/customs/insurance PDFs, chunked and indexed in FAISS, searchable through a dedicated semantic-search dashboard with source-cited answers. |
+| **Milestone 4** | Full Integration | Everything above was merged into **one connected application**, expanded from 3 agents to **9 specialised agents**, added role-based access control (RBAC) with 5 roles, a full Admin Dashboard, Knowledge Graph, Digital Twin simulation, Anomaly Scanner, Notifications, and multilingual support. This is the current, complete state of the platform. |
+
+Everything from this point on documents the **current, integrated Milestone 4 application** — which is what you'll actually run. Where relevant, notes call out which milestone introduced a given piece.
 
 ---
 
-## Program & Team Context
+## 🎯 What the Full Platform Does
 
-**Infosys Springboard Internship — Batch 1**
+Milestone 4 focuses mainly on **integration, usability, and end-to-end functionality**.
 
-**Mentor:** `MOHAMEDSIPLI M`
+### Core capabilities across all milestones
 
-**Final Team Members**
+- Secure signup/login with OTP and Security Question recovery *(Milestone 1)*
+- Freight pricing, route/weather risk, and carrier auditing *(Milestone 2)*
+- Retrieval-augmented Q&A over logistics documents *(Milestone 3)*
+- Integrated all major AI agents into one Streamlit application *(Milestone 4)*
+- Database-grounded AI Copilot *(Milestone 4)*
+- Role-based access for different user types *(Milestone 4)*
+- Local Qwen LLM support with a smaller-model fallback *(Milestone 4)*
+- Multilingual translation using NLLB-200 *(Milestone 4)*
+- Anomaly detection and digital-twin simulation *(Milestone 4)*
+- Knowledge-graph visualization *(Milestone 4)*
+- Notifications for operational incidents *(Milestone 4)*
+- Tools for generating freight documents *(Milestone 4)*
+- Public access support through ngrok / Cloudflare Tunnel *(Milestone 4)*
+
+---
+
+## 🧩 Main Modules
+
+| Module | Purpose |
+|---|---|
+| 🤖 AI Copilot | Answers freight-related questions using retrieved application data |
+| 🗺 Route Intelligence | Analyses ports, congestion and possible routes |
+| 💰 Freight Pricing | Estimates and compares freight quote components |
+| 🚢 Carrier Analytics | Reviews carrier reliability and capacity |
+| 🌦 Weather Risk | Evaluates weather conditions affecting port operations |
+| 📈 Margin Intelligence | Analyses quote profitability and margin behaviour |
+| 🛃 Customs Intelligence | Supports customs and HS-code related risk analysis |
+| 📄 Document Generator | Creates freight quote and Bill of Lading documents |
+| 🌐 Translation | Translates shipping documents and operational text |
+| 📚 PDF RAG | Searches uploaded customs and SOP documents |
+| 🚨 Notifications | Displays shipment, weather and customs incidents |
+| 🕸 Knowledge Graph | Visualizes relationships between freight entities |
+| 🧪 Digital Twin | Simulates changes across the freight network |
+| 🔎 Anomaly Scanner | Finds unusual patterns in operational data |
+| 📡 Data Feed Center | Provides operational data review/export functionality |
+
+---
+
+## 🏗️ Application Architecture
+
+The application can be viewed as four connected stages:
+
+```text
+                 ┌──────────────────────────┐
+                 │       Streamlit UI       │
+                 │ Dashboard + AI Copilot   │
+                 └────────────┬─────────────┘
+                              │
+                 ┌────────────▼─────────────┐
+                 │     Agent / Tool Layer   │
+                 │ Route • Pricing • Risk  │
+                 │ Carrier • Customs • RAG │
+                 └────────────┬─────────────┘
+                              │
+                 ┌────────────▼─────────────┐
+                 │     Data & Reasoning     │
+                 │ SQLite • ML • FAISS      │
+                 │ Route/Quote Calculators  │
+                 └────────────┬─────────────┘
+                              │
+                 ┌────────────▼─────────────┐
+                 │     AI Generation Layer │
+                 │ Qwen LLM + Translation  │
+                 └──────────────────────────┘
+```
+
+### How a Copilot request is handled
+
+1. The user's question is classified by the intent router.
+2. Relevant information is retrieved from SQLite or a calculation tool.
+3. If the answer requires a document, the RAG pipeline (built in Milestone 3) searches the indexed PDFs.
+4. Retrieved information is passed to the local Qwen model.
+5. The Copilot generates an answer based on the available context.
+6. NLLB-200 can translate the response when required.
+
+The design aims to keep the Copilot grounded in application data rather than generating unsupported freight values.
+
+---
+
+## 🔐 Milestone 1 — Authentication & Access
+
+The foundation of the platform. Every later milestone builds on top of this login flow.
+
+- **Signup** — username, email, password (strength-checked), and a security question/answer
+- **Login** — session-based sign-in with JWT tokens
+- **Forgot Password** — two independent recovery routes:
+  - **Security Question route** — answer the previously-set question to reset directly
+  - **OTP route** — a 6-digit, time-limited code emailed to the registered address
+- **Account protection** — progressive lockout after repeated failed login attempts
+
+### RBAC Roles (expanded in Milestone 4)
+
+| Role | Main Access |
+|---|---|
+| Admin | Complete platform and administration features |
+| Ops Manager / Freight Broker | Operational agents and AI Copilot |
+| Dispatcher | Copilot and selected operational modules |
+| Customer / Client | Copilot and quote-related features |
+
+Authentication includes:
+
+- Email and OTP login
+- JWT-based sessions
+- Password hashing with bcrypt
+- Security questions
+- Progressive account lockout
+- Role-based menu access
+
+---
+
+## 🚀 Milestone 2 — Core Platform & First 3 Agents
+
+The first working version of the platform, built directly on top of the Milestone 1 login system. It introduced:
+
+- **Customer Dashboard** — live fleet health index, active shipments, on-time rate, and daily quote count
+- **Admin Control Panel** — manage registered users and view the ML Model Card
+- **Agent 1 (early) – Freight Pricing** — predicted shipment cost from distance, cargo weight, congestion level, fuel index, cargo type, and port dwell time
+- **Agent 2 (early) – Route & Weather Risk** — estimated delay risk between origin/destination ports
+- **Agent 3 (early) – Carrier Audit & Tariff Compliance** — scored carrier compliance (punctuality, fuel efficiency, tariff adherence)
+- **Early AI Copilot** — a first version of the chat assistant, later replaced by the fully grounded Copilot in Milestone 4
+
+These three agents were later expanded into the 9-agent system documented below.
+
+---
+
+## 📚 Milestone 3 — RAG Knowledge Center
+
+Turned the platform's static logistics documentation into a searchable, conversational knowledge base — this pipeline now powers **Agent 9: PDF RAG Studio** in the current app.
+
+### How it works
+1. **Knowledge Base Generation** — auto-generates 50+ unique logistics SOP/customs/insurance PDFs
+2. **Ingestion Pipeline** — loads PDFs, skips corrupted documents gracefully, splits text with recursive chunking
+3. **Embedding & Indexing** — encodes chunks with Sentence-Transformers, stores them in a persistent **FAISS** vector database
+4. **Retrieval + Generation** — retrieves the most relevant chunks by similarity score and passes them to the LLM to generate a grounded, source-cited answer
+5. **Automated Evaluation Suite** — runs targeted logistics questions and logs retrieval accuracy, similarity scores, and generation latency
+
+---
+
+## 🔗 Milestone 4 — Full Integration (Current State)
+
+The major outcome of this milestone is the transition from separate project components to a **single integrated freight-intelligence platform**, expanding from 3 agents to 9 and adding the operational tooling (RBAC, Admin Dashboard, Knowledge Graph, Digital Twin, Anomaly Scanner, Notifications, translation) documented in the sections below.
+
+### Key takeaways
+
+- Multiple AI agents can work within one application.
+- Operational data and ML predictions are presented together.
+- The AI Copilot can use structured database information and retrieved documents.
+- RBAC provides different views for different users.
+- RAG extends the system beyond structured database queries.
+- Route, pricing, weather, carrier and customs analysis can be accessed from one interface.
+- Supporting tools such as anomaly detection, digital twin simulation and knowledge graphs provide additional operational insight.
+
+---
+
+## 🤖 AI Agents (Current — 9 Agents)
+
+### Agent 1 — Port & Route Intelligence
+
+Provides route and port analysis using:
+
+- Port congestion information
+- Interactive Folium maps
+- Great-circle distance calculations
+- Sailing-time estimation
+- Route/port risk classification
+- AI-assisted route recommendations
+
+**Models:** Random Forest, Gradient Boosting, Decision Tree, Logistic Regression, SVC
+
+---
+
+### Agent 2 — Dynamic Freight Pricing
+
+Used for freight quote analysis and cost estimation.
+
+Key capabilities:
+
+- Base freight cost calculation
+- Fuel surcharge handling
+- Customs/terminal fee calculation
+- Regression model comparison
+- Cost breakdown visualization
+- Pricing recommendations
+
+**Models:** Random Forest Regressor, Gradient Boosting Regressor, Decision Tree Regressor, Linear Regression
+
+---
+
+### Agent 3 — Carrier Performance
+
+Helps compare shipping carriers based on reliability and fleet-related information.
+
+Includes:
+
+- Reliability analysis
+- Capacity simulation
+- Carrier risk classification
+- On-time delivery analysis
+- Carrier recommendation support
+
+**Models:** Random Forest, Gradient Boosting, Decision Tree, Logistic Regression, SVC
+
+---
+
+### Agent 4 — Weather & Harbor Risk
+
+Monitors weather conditions around supported ports.
+
+Includes:
+
+- Live weather information
+- Storm-severity mapping
+- Wind/wave safety analysis
+- Weather-risk prediction
+- Weather-based recommendations
+
+Weather information is obtained through the Open-Meteo API.
+
+---
+
+### Agent 5 — Freight Margin Intelligence
+
+Examines how different cost components influence profitability.
+
+Includes:
+
+- Rate simulation
+- Carrier yield analysis
+- Margin prediction
+- Cost/margin correlation analysis
+- Margin distribution analysis
+
+**Models:** Random Forest Regressor, Gradient Boosting Regressor, Decision Tree Regressor, Linear Regression
+
+---
+
+### Agent 6 — Customs & HS Code Intelligence
+
+Supports customs-risk and regulatory analysis.
+
+Includes:
+
+- Customs duty simulation
+- Regulatory document mapping
+- Clearance-risk prediction
+- Country/cargo analysis
+- Customs recommendations
+
+**Models:** Random Forest, Gradient Boosting, Decision Tree, Logistic Regression, SVC
+
+---
+
+### Agent 7 — Freight Document Generator
+
+Automates basic shipping documentation.
+
+Current capabilities include:
+
+- Freight quote PDF generation
+- Bill of Lading generation
+
+---
+
+### Agent 8 — Maritime Translation
+
+Provides translation support for freight-related information.
+
+Includes:
+
+- Text translation
+- Maritime SOP translation
+- Batch translation
+- Shipping terminology/glossary support
+
+The translation engine uses NLLB-200.
+
+---
+
+### Agent 9 — PDF RAG Studio
+
+Allows users to work with their own freight-related documents. This is the productionized version of the Milestone 3 RAG pipeline.
+
+Workflow:
+
+```text
+Upload PDF
+   ↓
+Text extraction
+   ↓
+Chunking
+   ↓
+Embedding
+   ↓
+FAISS index
+   ↓
+Question
+   ↓
+Relevant document sections
+   ↓
+Grounded answer
+```
+
+This can be used with customs manuals, carrier SOPs and similar operational documents.
+
+---
+
+## 🧠 Machine Learning Approach
+
+The predictive modules compare multiple classical ML algorithms instead of relying on a single model.
+
+### Classification
+
+Used for areas such as:
+
+- Carrier reliability
+- Weather risk
+- Customs clearance risk
+
+Typical evaluation metrics:
+
+- Accuracy
+- F1 score
+
+### Regression
+
+Used for areas such as:
+
+- Freight pricing
+- Freight margin
+
+Typical evaluation metrics:
+
+- R²
+- RMSE
+
+The application can compare model results and use the strongest-performing model for relevant predictions.
+
+---
+
+## 📊 Visual Analytics
+
+The platform uses interactive visualizations to make model and operational results easier to understand.
+
+Examples include:
+
+- Bar charts
+- Scatter plots
+- Box plots
+- Histograms
+- Heatmaps
+- Waterfall charts
+- Funnel charts
+- Sunburst charts
+- Treemaps
+- Folium maps
+
+The visualizations are used for both operational monitoring and model comparison.
+
+---
+
+## 🛠️ Technology Stack
+
+| Category | Technology | Usage in the Project |
+|---|---|---|
+| Frontend / UI | Streamlit | Main dashboard, navigation, forms and AI Copilot interface |
+| Backend | Python 3 + FastAPI | Application logic, APIs and model-service integration |
+| Database | SQLite | Stores ports, shipments, carriers, quotes, customs and operational data |
+| Local LLM | Qwen2.5-3B-Instruct | Generates grounded natural-language responses |
+| LLM Fallback | Qwen2.5-1.5B-Instruct | Fallback model when the larger model cannot be loaded |
+| Translation | NLLB-200 | Multilingual translation of freight-related text and documents |
+| RAG / Vector Search | FAISS + sentence-transformers | Searches uploaded customs manuals and carrier SOPs |
+| Machine Learning | scikit-learn | Classification, regression and anomaly-detection models |
+| Visualization | Plotly | Interactive analytics charts and model comparisons |
+| Maps | Folium + streamlit-folium | Port, route and weather-risk maps |
+| Authentication | PyJWT + bcrypt | JWT sessions, password hashing and access control |
+| Weather Data | Open-Meteo REST API | Weather information for monitored ports |
+| Documents | ReportLab / FPDF | Freight quote and Bill of Lading PDF generation |
+| Data Preparation | Kaggle + Faker | Dataset preparation and realistic demo-data generation |
+| Deployment | Google Colab + ngrok / Cloudflare Tunnel | GPU execution and public application access |
+
+---
+
+## 🗃️ Data & Storage
+
+SQLite acts as the main application database.
+
+The database stores operational information such as:
+
+- Ports
+- Shipments
+- Carriers
+- Routes
+- Freight quotes
+- Customs requirements
+- Weather-risk information
+- Operational records
+- ML metrics
+
+Demo data can be generated or prepared through the project's data-seeding pipeline.
+
+---
+
+## 🔄 Execution Flow (Current App)
+
+The recommended order for running the complete application is:
+
+```text
+Prepare Data
+     ↓
+Seed SQLite Database
+     ↓
+Prepare PDF / RAG Index
+     ↓
+Load Qwen + Translation Engines
+     ↓
+Start AI Agents
+     ↓
+Verify Authentication & RBAC
+     ↓
+Run End-to-End Tests
+     ↓
+Launch Streamlit
+     ↓
+Expose Application
+```
+
+This order reduces dependency issues because the Copilot and several agents require database and document-retrieval components to be ready first.
+
+---
+
+## 🚀 Running the Project
+
+### Environment
+
+The project is designed to run in **Google Colab**, particularly when local LLM inference requires GPU resources.
+
+### Basic workflow
+
+1. Open the project notebook.
+2. Install the required Python packages.
+3. Generate or load the application data.
+4. Initialize the SQLite database.
+5. Prepare the document/RAG index if required.
+6. Start the model service.
+7. Launch the Streamlit application.
+8. Open the generated tunnel URL.
+
+### Demo credentials
+
+For the configured demo environment, use the credentials provided in the project configuration rather than hard-coding credentials into the public repository.
+
+---
+
+## 📁 Project Structure
+
+```text
+freight_app/
+│
+├── app.py
+├── admin_dash.py
+├── ai_copilot.py
+├── profile.py
+│
+├── agent1_route.py
+├── agent2_pricing.py
+├── agent3_carrier.py
+├── agent4_weather.py
+├── agent5_margin.py
+├── agent6_customs.py
+├── agent7_docs.py
+├── agent8_translation.py
+└── agent9_pdf_rag.py
+│
+├── anomaly_scanner.py
+├── digital_twin.py
+├── knowledge_graph.py
+├── notifications.py
+├── data_feed_center.py
+│
+├── auth.py
+├── rbac.py
+├── db.py
+├── seed_data.py
+├── llm_engine.py
+├── translation_engine.py
+├── rag_engine.py
+├── model_server.py
+│
+├── config.py
+├── ui_theme.py
+└── requirements.txt
+```
+
+---
+
+## 📸 Application Screenshots
+
+### Login & Access
+![Sign In Page](screenshots/sign%20in.png)
+*Secure sign-in screen with role-based demo credentials.*
+
+### OTP Section
+![OTP Section](screenshots/otp%20section.png)
+OTP verification provides secure authentication using a one-time password.
+
+### Sign Up
+![Sign Up](screenshots/sign%20up.png)
+The Sign Up page allows new users to create an account securely.
+
+### Admin Dashboard
+![Admin Dashboard](screenshots/admin%20dashboards.png)
+*Command-center overview of shipments, quotes, and platform-wide KPIs.*
+
+### AI Copilot
+![AI Copilot](screenshots/AI%20Copilot.png)
+*Grounded chat assistant answering questions using live freight data.*
+
+### Route Optimization (Agent 1)
+![Agent 1 Route](screenshots/agent%201%20route.png)
+*Interactive port-to-port route mapping and optimization analysis.*
+
+### Dynamic Freight Pricing (Agent 2)
+![Agent 2 Spot Quotes](screenshots/agent%202%20spot%20quotes.png
+*Real-time dynamic pricing engine for freight quotes.*
+
+### Carrier Performance (Agent 3)
+![Agent 3 Carriers](screenshots/agent%203%20carriers.png)
+*Carrier capacity, reliability, and performance analytics.*
+
+### Weather & Freight Risk (Agent 4)
+![Agent 4 Weather Risk](screenshots/agent%204%20weather%20risk.png)
+*Live port weather overlays and shipment risk scoring.*
+
+### Margin Predictor (Agent 5)
+![Agent 5 Margin Predictor](screenshots/agent%205%20margin%20predictor.png)
+*Predicted yield and margin outlook across active shipments.*
+
+### Customs & Tariffs (Agent 6)
+![Agent 6 Customs & Tariff](screenshots/agent%206%20customs%20%26%20tariff.png)
+*Customs, tax, and compliance guidance for cross-border shipments.*
+
+### Digital Bill of Lading (Agent 7)
+![Agent 7 Docs](screenshots/agent%207%20docs.png)
+*Automated generation and management of shipping documents.*
+
+### Alerts & Translation (Agent 8)
+![Agent 8 Translation](screenshots/agent%208%20translation.png)
+*Real-time incident alerts alongside 20+ language translation support.*
+
+### PDF SOP / RAG Studio (Agent 9)
+![Agent 9 PDF RAG Studio](screenshots/agent%209%20pdf%20rag%20studio.png)
+*Upload and query customs/SOP PDFs using retrieval-augmented search.*
+
+### Notifications
+![Notifications](screenshots/notifications.png)
+Displays important alerts and updates related to freight operations and system activities.
+
+### Anomaly Scanner
+![Anomaly Scanner](screenshots/anomaly%20scanner.png)
+*Isolation Forest–based detection of anomalies across shipments and ports.*
+
+### Digital Twin Simulation
+![Digital Twin](screenshots/digital%20twin.png)
+*Monte Carlo trade-stress simulation of the global freight network.*
+
+### Knowledge Graph
+![Knowledge Graph](screenshots/knowledge%20graph.png)
+*Interactive graph linking ports, carriers, shipments, and documents.*
+
+### Data Feed Center
+![Data Feed Center](screenshots/data%20feed%20center.png)
+*Manual and bulk CSV data ingestion into the live database.*
+
+---
+
+## 📖 Glossary (Simple Terms)
+
+A few shipping terms used throughout this README, explained simply:
+
+| Term | Simple Meaning |
+|---|---|
+| **BAF** | Bunker Adjustment Factor — an extra fee added to cover changing fuel prices |
+| **TEU** | Twenty-foot Equivalent Unit — the standard way to measure how much a container can hold |
+| **HS Code** | A code used worldwide to classify goods for customs purposes |
+| **Dwell Time** | How long cargo sits at a port before it moves on |
+| **Bill of Lading** | A shipping receipt/legal document showing what's being shipped and to whom |
+| **RAG** | Retrieval-Augmented Generation — the AI looks up real documents before answering, instead of guessing |
+| **RBAC** | Role-Based Access Control — different users see different features depending on their role |
+| **OTP** | One-Time Password — a temporary code sent to your email to verify it's really you |
+
+---
+
+## ❓ Quick FAQ
+
+**Q: Do I need a GPU to run this?**
+A local LLM (Qwen) works best with a GPU, which is why the project is designed to run on Google Colab. It can fall back to a smaller model or CPU mode if no GPU is available, though responses will be slower.
+
+**Q: Is the data real?**
+No — ports, shipments, carriers, and customer data are generated for demo purposes. Only the live weather data (from Open-Meteo) is real-time.
+
+**Q: Can the AI Copilot make up numbers?**
+It's designed not to. The Copilot is instructed to answer only from data it can retrieve (the database or uploaded PDFs) and to say so clearly when it doesn't have enough information.
+
+**Q: What happens if the 3B model can't load?**
+The app automatically falls back to the smaller Qwen2.5-1.5B-Instruct model so the Copilot keeps working, just with slightly less detailed responses.
+
+**Q: Why does the README talk about "Milestones" — do I need to run them separately?**
+No. Milestones 1–3 were development stages; everything they built is already merged into the single Milestone 4 application described in this README. You only need to run the current app.
+
+---
+
+## ⚠️ Known Limitations & Future Scope
+
+### Current Limitations
+- Uses generated/synthetic data for most modules rather than live commercial freight data.
+- SQLite is used for simplicity, which limits how many people can use the app at the same time.
+- Designed as a single-organization demo rather than a multi-company production system.
+
+### Possible Future Improvements
+- Connect to real freight-rate and carrier APIs instead of demo data.
+- Move to a more scalable database for multiple concurrent users.
+- Add more languages and refine translation accuracy for maritime-specific terms.
+- Expand the RAG knowledge base to update automatically from a shared document folder.
+
+---
+## Mentor
+Mohamedsipli M.
+
+## 👥 Team Contribution
+
+This project was developed collaboratively as part of the **Infosys Springboard Internship**, across all four milestones.
 
 | No. | Team Member | Contribution |
-|:---:|:------------|:--------------|
-| 01 | Tharani Mahasamudram | Dynamic Margin Predictor & Yield Optimizer; Customs, Tariff & Regulatory Intelligence; Digital Bill of Lading & OCR; Alerts & Incidents; Knowledge Graph; Digital Twin; Anomaly/Risk Scanner; AI Copilot Quality Requirement |
-| 02 | Vigashini S | GitHub & README Documentation; Repository Setup & All GitHub Management; `requirements.txt` Creation & Dependency Handling; RAG & Data Pipeline; User Profile Management; Profile Picture Upload; Change Password Functionality |
-| 03 | Megha Ramthirth | Extended Admin Dashboard — Add, Delete, Promote, Demote and Unlock Users; Route AI & Maritime Fuel Efficiency; Dynamic Freight Pricing; Carrier Performance & Capacity Intelligence; Weather Risk & Storm Telemetry |
-| 04 | Kamireddy Samatha Sri | Signup/Login with OTP Verification; Security Question & Security Answer; OTP & Security Question Password Recovery; Secure Session/JWT Handling; Logout Functionality |
-
-## Overall Project Explanation
-
-### Problem Statement
-Ocean-freight brokerages juggle port congestion, volatile fuel-linked pricing, carrier reliability, weather risk, and customs compliance across dozens of live shipments at once — usually across spreadsheets and siloed tools. FreightQuote AI gives brokers, dispatchers, and clients a single agentic copilot that answers routing, pricing, weather, and compliance questions **grounded in real data**, instead of relying on manual lookups or an LLM's guesswork.
-
-### Solution Summary
-FreightQuote AI is an agentic decision-support platform for an ocean-freight brokerage. It monitors global ports, calculates dynamic freight quotes, benchmarks carriers, tracks weather and customs risk, and exposes an LLM-powered copilot that answers routing, pricing, weather, and compliance questions using only grounded database facts, live telemetry, and retrieved documents — never fabricated numbers. Nine specialised agents sit on top of a shared platform layer (authentication, RBAC, translation, alerting, admin tooling), all running inside a single Streamlit application launched from Google Colab.
-
-### Architecture Overview
-
-The platform follows a four-layer agentic pattern:
-
-![Architecture Diagram](docs/architecture-diagram.png)
-
-**AI Copilot Answer Pipeline:**
-1. `classify_intent()` maps the question to shipment / pricing / weather / customs / carrier domains.
-2. `run_grounded_query()` pulls exact rows/aggregates from SQLite, or runs the dedicated route-distance / freight-quote solver for computed questions.
-3. If no SQL tool matches, `execute_tool()` falls back to `rag_engine.answer_with_citation()` over the FAISS-indexed document store (customs manuals, carrier SOPs).
-4. `generate_grounded_answer()` passes the retrieved facts into Qwen2.5-3B-Instruct with an explicit instruction to answer only from the provided context, in plain business language — never as SQL/Python code — then optionally translates via NLLB-200.
-
-A sidebar status panel — **"🤖 Neural AI Model & GPU Status"** — shows live loading state for both the Qwen and NLLB engines (🟢 Active / 🟡 Loading).
-
-### The 9 Agents at a Glance
-
-| # | Agent | One-Line Purpose |
-|:--|:------|:-------------------|
-| 1 | Route AI & Maritime Fuel Efficiency Studio | Ocean vessel route optimization, bunker fuel economy & 10-parameter sailing simulator |
-| 2 | Dynamic Freight Pricing Engine | Real-time ocean container spot pricing, margin sensitivity & BAF surcharge engine |
-| 3 | Carrier Performance & Capacity Intelligence | Carrier reliability ratings, SLA monitoring & 8-parameter capacity simulator |
-| 4 | Weather Risk Intelligence & Storm Telemetry | Real-time port cyclone telemetry, vessel delay forecasts & storm simulator |
-| 5 | Dynamic Margin Predictor & Yield Optimizer | AI spot-quote surcharge engine, profit margin regression & rate simulator |
-| 6 | Customs, Tariff & Regulatory Compliance | HS Code tariff analytics, customs hold probability & duty simulator |
-| 7 | Digital Bill of Lading & Document OCR Studio | AI document OCR scanner, field extractor & fraud detector |
-| 8 | Multilingual Maritime SOP & Document Translation Studio | Offline translation of freight documents/SOPs & maritime trade glossary (NLLB-200) |
-| 9 | PDF SOP & Freight Document RAG Studio | Upload-your-own-document workbench for customs/SOPs with grounded Q&A |
-
-### Full Technology Stack
-
-| Layer | Technology | Purpose |
-|:------|:-----------|:--------|
-| Frontend / UI | Streamlit + streamlit-option-menu | Multi-tab dashboard, sidebar navigation, chat UI |
-| Tunnelling | ngrok / Cloudflare Tunnel | Exposes the Colab-hosted Streamlit app on a public URL |
-| Backend language | Python 3 / FastAPI | All application, ML and agent logic |
-| Database | SQLite (via `db.py`, WAL mode + connection pooling, 64MB page cache) | Ports, shipments, carriers, freight_quotes, customs data, weather risk, and shared ops tables |
-| LLM | Qwen2.5-3B-Instruct (4-bit, transformers + bitsandbytes) | Local, in-process natural-language reasoning over grounded facts |
-| Fallback LLM | Qwen2.5-1.5B-Instruct | Automatic degrade path if the 3B model can't load |
-| Translation | Facebook NLLB-200 (distilled-600M) | Offline translation of copilot answers & shipping documents (20+ languages) |
-| RAG / Document Search | pdfplumber + built-in knowledge base (keyword/relevance-scored retrieval) | Retrieval over uploaded customs manuals, carrier SOPs, and auto-indexed PDFs |
-| Live weather | Open-Meteo REST API via `weather_context.py` | Real current-weather pull per port coordinate, feeding the weather risk agent |
-| ML models (classical) | scikit-learn — RandomForest, GradientBoosting, DecisionTree, Logistic/Linear Regression, SVC/SVR, Isolation Forest | Per-agent prediction and anomaly detection |
-| Visualization | Plotly Express / Plotly Graph Objects, Folium + streamlit-folium | All interactive charts, port network maps, and storm severity maps |
-| Auth | PyJWT, bcrypt | OTP-based login, security questions, password hashing, RBAC |
-| Reporting / Docs | ReportLab / FPDF | PDF Bill of Lading and quote document generation |
-| Data | Kaggle / Faker | Realistic shipment, carrier, and port records for seeding |
-
-### Key Differentiators
-- **Grounded generation** — the LLM only answers from retrieved SQL facts, computed solver output (routes, quotes), or RAG-retrieved documents; never fabricated numbers.
-- **Transparent ML** — every predictive agent benchmarks several classical algorithms side-by-side and shows its work.
-- **RBAC role-awareness** — every tab is gated so an Ops Manager and an Admin see a different, appropriately-scoped menu.
-- **Fail-soft LLM degrade path** — if the 3B model can't load, the app automatically degrades to the 1.5B model rather than crashing.
+|---|---|---|
+| **01** | **Smita Barada** | User Authentication + OTP – Login, signup, JWT, bcrypt, role-based access, email OTP, forgot password, OTP verification, expiry, resend cooldown, and account lockout. |
+| **02** | **Sri Harsha Thorupunuri** | Backend – FastAPI, API endpoints, SQLite/database integration, backend business logic, agent orchestration, and data processing. |
+| **03** | **Nithya B** | RAG – PDF/document processing, document loading, text chunking, embeddings, FAISS vector store, similarity search, and context retrieval. |
+| **04** | **Megha Ramthirth** | LLM + AI Copilot – Qwen LLM integration, prompt processing, AI Copilot, retrieved-context integration, grounded responses, and fallback model. |
+| **05** | **Vigashini S** | UI/UX Design – Streamlit interface, dashboards, navigation, forms, agent screens, charts, and overall user experience. |
+| **06** | **Syed Saleem Malik** | GitHub + Integration – Repository management, branches, commits, merging, README, .gitignore, task management, final code integration, and deployment support. |
 
 ---
 
-## The 9 Specialised Agents
+## 🙏 Acknowledgements
 
-<div align="center">
-
-**AI COPILOT / ORCHESTRATION LAYER**
-`(intent_router.py)`
-
-▼ routes each query to the right agent ▼
-
-</div>
-
-| | | |
-|:---:|:---:|:---:|
-| **1. Route AI** | **2. Freight Pricing** | **3. Carrier Performance** |
-| **4. Weather Risk** | **5. Margin Predictor** | **6. Customs & Tariff** |
-| **7. Docs (OCR)** | **8. Translation** | **9. PDF RAG Studio** |
-
-### Agent 1 — Route AI & Maritime Fuel Efficiency Studio
-
-1. **Business function:** Ocean vessel route optimization, bunker fuel economy, and port congestion/dwell-time telemetry across monitored global and Indian ports.
-2. **ML models benchmarked (10-model comparison):** Random Forest Regressor, Gradient Boosting Regressor, Linear Regression, Ridge Regression, Lasso Regression, Support Vector Regressor (SVR), Decision Tree Regressor, MLP Neural Network, K-Means Cluster Model, Isolation Forest Outlier Guard. **Best model:** **Random Forest Regressor** (R² = 0.96, RMSE = 0.4 days) — flagged "Optimal Best" as it has the highest R² and lowest error for predicting route delay.
-3. **SQL tables/data read from:** `ports`.
-4. **Output to user:** Bar chart (port congestion index by region), Scatter (avg dwell days vs active vessels), model-comparison Bar chart + results table, a 10-parameter vessel sailing simulator (speed/fuel/cost metrics), a Folium port network map, and an AI route advisory Q&A.
-
-### Agent 2 — Dynamic Freight Pricing Engine
-
-1. **Business function:** Real-time ocean container spot pricing, margin sensitivity, and BAF (Bunker Adjustment Factor) fuel surcharge calculation.
-2. **ML models benchmarked (10-model comparison):** Random Forest Pricing Regressor, Gradient Boosting Regressor, Linear Rate Solver, Ridge Pricing Model, Lasso Rate Model, Support Vector Regressor (SVR), Decision Tree Regressor, MLP Neural Network, K-Means Rate Clustering, Isolation Forest Outlier Filter. **Best model:** **Random Forest Pricing Regressor** (R² = 0.97, RMSE = $65 USD) — "Optimal Best" for freight-price prediction.
-3. **SQL tables/data read from:** `freight_quotes`.
-4. **Output to user:** Scatter (base cost vs final price) and Histogram (margin % distribution), model-comparison Bar chart + results table, a spot quote & margin calculator, a tariff/customer-tier matrix table, Waterfall (cost build-up), correlation Heatmap, Funnel (quote value by pipeline status), and an AI pricing advisory Q&A.
-
-### Agent 3 — Carrier Performance & Capacity Intelligence
-
-1. **Business function:** Carrier reliability ratings, SLA monitoring, and fleet capacity allocation across ocean carrier partners.
-2. **ML models benchmarked (10-model comparison):** Random Forest Ranker, Gradient Boosting Classifier, Logistic Regression Ranker, Support Vector Classifier (SVC), Decision Tree Ranker, MLP Neural Network, K-Means Carrier Cluster, PCA + SVM Model, Ridge Classifier, Isolation Forest Outlier Guard. **Best model:** **Random Forest Ranker** (Accuracy = 0.96, F1 = 0.95) — "Optimal Best" for carrier reliability ranking.
-3. **SQL tables/data read from:** `carriers`.
-4. **Output to user:** Bar chart (on-time performance %) and Scatter (cost index vs on-time %), model-comparison Bar chart + results table, an 8-parameter capacity/SLA simulator, a carrier risk & SLA ledger table, Treemap (fleet by risk level, colored by rating), correlation Heatmap, and an AI carrier advisory Q&A.
-
-### Agent 4 — Weather Risk Intelligence & Storm Telemetry
-
-1. **Business function:** Real-time port cyclone/storm telemetry, vessel delay forecasting, and harbor-safety risk monitoring.
-2. **ML models benchmarked (10-model comparison):** Random Forest Classifier, Gradient Boosting Classifier, Logistic Regression, Support Vector Classifier (SVC), Decision Tree Classifier, MLP Neural Network, Ridge Classifier, K-Means Weather Cluster Model, PCA + SVM Classifier, Isolation Forest Outlier Guard. **Best model:** **Random Forest Classifier** (Accuracy = 0.95, F1 = 0.94) — "Optimal Best" for storm-risk prediction.
-3. **SQL tables/data read from:** `weather_risks`.
-4. **Output to user:** Bar chart (port storm severity) and Scatter (wind speed vs wave height), model-comparison Bar chart + results table, a 10-parameter typhoon/rerouting simulator, a Folium storm-severity map, a corridor storm-risk matrix table, and an AI weather advisory Q&A.
-
-### Agent 5 — Dynamic Margin Predictor & Yield Optimizer
-
-1. **Business function:** AI spot-quote surcharge engine and profit-margin regression across quotes, with a carrier yield matrix.
-2. **ML models benchmarked (10-model comparison):** Random Forest Regressor, Gradient Boosting Regressor, Linear Regression, Ridge Regression, Lasso Regression, Support Vector Regressor (SVR), Decision Tree Regressor, MLP Neural Network, K-Means Cluster Model, Isolation Forest Outlier Guard. **Best model:** **Random Forest Regressor** (R² = 0.96, RMSE = $85 USD) — "Optimal Best" for margin prediction.
-3. **SQL tables/data read from:** `freight_quotes`.
-4. **Output to user:** Bar chart (avg margin % by carrier) and Scatter (base cost vs final price), model-comparison Bar chart + results table, a 10-parameter rate/surcharge simulator, a carrier yield matrix table, Box plot (margin spread by carrier), correlation Heatmap, Histogram (margin distribution), and an AI margin advisory Q&A.
-
-### Agent 6 — Customs, Tariff & Regulatory Compliance
-
-1. **Business function:** HS Code tariff analytics and customs clearance-hold probability assessment by country and cargo type.
-2. **ML models benchmarked (10-model comparison):** Random Forest Risk Classifier, Gradient Boosting Classifier, Logistic Regression, Support Vector Classifier (SVC), Decision Tree Classifier, MLP Neural Network, Naive Bayes Tariff Classifier, K-Means Tariff Cluster, Linear Ridge Classifier, Isolation Forest Outlier Guard. **Best model:** **Random Forest Risk Classifier** (Accuracy = 0.96, F1 = 0.95) — "Optimal Best" for customs hold-risk prediction.
-3. **SQL tables/data read from:** `customs_tariffs`.
-4. **Output to user:** Bar chart (duty rate by cargo category) and Scatter (duty rate vs clearance risk), model-comparison Bar chart + results table, an 8-parameter customs duty simulator, a regulatory document/compliance matrix table, Sunburst (duty exposure by origin country & cargo), and an AI customs advisory Q&A.
-
-### Agent 7 — Digital Bill of Lading & Document OCR Studio
-
-1. **Business function:** AI-powered shipping-document OCR scanning, field extraction, and fraud/falsification detection, plus a digital Bill of Lading builder.
-2. **ML models benchmarked (10-model comparison):** Random Forest Classifier, Gradient Boosting Classifier, Logistic Regression, Support Vector Classifier (SVC), Decision Tree Classifier, MLP Neural Network, Multinomial Naive Bayes, K-Means Cluster Classifier, Ridge Classifier, Isolation Forest Outlier Guard. **Best model:** **Random Forest Classifier** (Accuracy = 0.97, F1 = 0.96) — "Optimal Best" for document fraud detection.
-3. **SQL tables/data read from:** `shipments`.
-4. **Output to user:** Extracted OCR text payload + a structured JSON metadata card, model-comparison Bar chart + results table, a 10-parameter digital Bill of Lading builder, and an AI document advisory Q&A.
-
-### Agent 8 — Multilingual Maritime SOP & Document Translation Studio
-
-1. **Business function:** Offline translation of freight documents, maritime SOPs, and trade terminology into 20+ languages.
-2. **ML models benchmarked:** None — powered by a single translation model, Facebook **NLLB-200-distilled-600M**, not a classical multi-model ML benchmark, so no "best of several" selection applies.
-3. **SQL tables/data read from:** None — translates a built-in dictionary of maritime SOPs and glossary terms (not database-backed).
-4. **Output to user:** Real-time translated text, a translated SOP document view, batch-translated SOPs with a downloadable file, a translated maritime trade glossary (BAF, TEU, Net Margin %, HS Code, Dwell Time, Congestion Index, Reliability Score), and a supported-languages table.
-
-### Agent 9 — PDF SOP & Freight Document RAG Studio
-
-1. **Business function:** Upload-your-own-document workbench for customs policies, logistics SOPs, and tariff rules, with natural-language Q&A grounded in the uploaded content.
-2. **ML models benchmarked:** None — uses `pdfplumber` for text extraction and a keyword/relevance-scored retrieval over a built-in knowledge base plus uploaded documents, not a classical ML benchmark.
-3. **SQL tables/data read from:** None directly — retrieves from an in-memory document knowledge base (built-in SOPs + any uploaded/auto-indexed PDFs), not the SQL database.
-4. **Output to user:** An extracted-document text preview and a ranked list of RAG search results, each with its source document and a relevance score.
-
-### Maritime Glossary
-| Term | Meaning |
-|:-----|:--------|
-| **BAF** | Bunker Adjustment Factor — a fuel-price surcharge added to the base ocean freight rate |
-| **TEU** | Twenty-foot Equivalent Unit — the standard unit for measuring container capacity |
-| **HS Code** | Harmonized System Code — the international classification code for traded goods, used for customs/duty assessment |
-| **Dwell Time** | The time a container spends sitting at a port terminal before being loaded/moved |
-| **Bill of Lading (BoL)** | The legal shipping document issued by a carrier acknowledging receipt of cargo and detailing the terms of transport |
+This project was built as part of the **Infosys Springboard Internship**. Thanks to our mentor for their guidance and feedback throughout all four milestones of development.
 
 ---
-
-## Authentication, OTP & Security
-
-**Auth flow** (implemented in `auth.py`, using PyJWT + bcrypt, with account lockout/cooldown after repeated failed attempts):
-
-```
-   ┌──────────┐     ┌──────────┐     ┌──────────────────┐
-   │  Signup  │ ──▶ │  Login   │ ──▶ │  JWT Session      │
-   └──────────┘     └────┬─────┘     │  (RBAC-scoped     │
-                         │           │   app access)      │
-                         │           └──────────────────┘
-                         │
-                  (Forgot Password)
-                         │
-                         ▼
-                ┌──────────────────┐
-                │   OTP sent to     │
-                │ registered email  │
-                └────────┬──────────┘
-                         │
-              ┌──────────┴──────────┐
-              │                     │
-        OTP correct           OTP incorrect
-              │                     │
-              ▼                     ▼
-      ┌───────────────┐   ┌────────────────────┐
-      │ Reset Password │   │ Security Question   │
-      │                │   │ Fallback             │
-      └───────┬────────┘   └──────────┬──────────┘
-              │                        │
-              │                answer correct?
-              │                        │
-              ▼                        ▼
-        back to Login          Reset Password ──▶ back to Login
-```
-
-> OTP delivery and any credentials are configured via environment variables and are **never** committed to the repository — see the [Secrets & Credentials](#secrets--credentials-security-checklist) section below.
-
-**RBAC roles:**
-
-| Role | Typical Access |
-|:-----|:-----------------|
-| Admin | All tabs, including the Admin Dashboard and full agent suite |
-| Freight Broker / Regional Ops Manager | All agents and the AI Copilot, excluding the Admin Dashboard |
-| Dispatcher | AI Copilot + a subset of operational agents |
-| Customer / Client | AI Copilot plus quote-related agents only |
-
----
-
-## Admin Dashboard
-
-![Admin Dashboard](docs/screenshots./admin_dashboard.jpeg)
-
-**Admin-only capabilities:**
-- User management & role assignment
-- System health monitoring (DB status, LLM/translation engine status)
-- ML model performance ledger (accuracy/F1/R² per agent, logged to the `ml_metrics` table)
-- Chat history & audit trail across users
-
----
-
-## Screenshots / GIFs
-
-| Login Screen | 
-|---|---|
-| ![Login](docs/screenshots./login.png) | 
-
-| Agent Tab Example | AI Copilot |
-|---|---|
-| ![Agent](docs/screenshots./agent-example.jpeg) | ![Copilot](docs/screenshots./copilot-chat.png) |
-
-| Admin Dashboard |
-|---|
-| ![Admin](docs/screenshots./admin_dashboard.jpeg) |
-
-
-
----
-
-## Installation & Run Instructions (from GitHub)
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/<org-or-user>/freightquote-ai.git
-cd freightquote-ai
-
-# 2. Create and activate a virtual environment
-python -m venv venv
-source venv/bin/activate   # Windows: venv\Scripts\activate
-
-# 3. Install dependencies
-pip install -r requirements.txt
-
-# 4. Configure environment variables
-cp .env.example .env
-# then open .env and fill in YOUR OWN values (see Secrets & Credentials section)
-
-# 5. Seed the database (first run only)
-python seed_data.py
-
-# 6. Run the app
-streamlit run app.py
-```
-
-### Run on Google Colab
-Since the platform is designed to run from **Google Colab** with Streamlit tunnelled out via ngrok / Cloudflare Tunnel:
-
-1. Open the project notebook: `<Colab notebook link>`
-2. Run cells in this exact order:
-   1. Install dependencies (`pip install -r requirements.txt`)
-   2. Mount/set Colab **Secrets** for `HF_TOKEN`, `OTP_EMAIL_ADDRESS`, `OTP_EMAIL_APP_PASSWORD`, `JWT_SECRET_KEY`, etc.
-   3. Run `seed_data.py` to populate SQLite
-   4. Launch the ngrok/Cloudflare tunnel
-   5. Run `streamlit run app.py` (or the notebook's launch cell)
-3. Open the public tunnel URL printed in the notebook output.
-
-### Minimum Requirements
-- **Python:** 3.10+
-- **RAM/VRAM:** A GPU with **≥ 6 GB VRAM** is recommended for the Qwen2.5-3B-Instruct model (4-bit quantized). If sufficient VRAM isn't available, the app **automatically degrades to the Qwen2.5-1.5B-Instruct** fallback model rather than crashing.
-- **Disk space:** Several GB free for LLM + NLLB-200 model weights.
-
----
-
-## Secrets & Credentials
-
-All credentials are supplied via environment variables (locally through `.env`, or as Colab **Secrets** when run in Google Colab) and are **never** committed to the repository — only `.env.example` with empty/placeholder values is tracked.
-
-| Variable | Purpose | Where to get it |
-|:---|:---|:---|
-| `HF_TOKEN` | HF token for Qwen2.5 weights | HF → Settings → Access Tokens |
-| `KAGGLE_USERNAME` / `KAGGLE_KEY` | Kaggle API creds for seeding | Kaggle → Account → New API Token |
-| `OTP_EMAIL_ADDRESS` | Mailbox that sends OTP emails | Dedicated project mailbox |
-| `OTP_EMAIL_APP_PASSWORD` | Gmail app password for SMTP | Google Account → Security → App Passwords (2FA req'd) |
-| `JWT_SECRET_KEY` | Signing key for session tokens | Generate locally (see note below) |
-| `ADMIN_EMAIL` | Seeded default admin email | Set by the team |
-| `ADMIN_PASSWORD` | Seeded default admin password | Set by the team (strong, unique) |
-| `NGROK_AUTH_TOKEN` | Token to expose app via ngrok | ngrok.com → Your Authtoken |
-
-**Notes:**
-- `OTP_EMAIL_ADDRESS` / `OTP_EMAIL_APP_PASSWORD`: use a dedicated project/team mailbox, not a personal one. The app password is **not** your real Gmail password.
-- `JWT_SECRET_KEY`: generate with `python -c "import secrets;print(secrets.token_hex(32))"`.
-- `ADMIN_PASSWORD`: use a strong, unique value — don't ship the `admin123` demo default.
-- `NGROK_AUTH_TOKEN`: only needed if using ngrok instead of Cloudflare Tunnel.
-
-> ⚠️ If any token or password above is ever accidentally committed, treat it as compromised: revoke/rotate it immediately (Hugging Face/Kaggle: delete & regenerate the token; Google: revoke the App Password) — do not just delete the line in a later commit, since it remains in git history.
-
----
-
-## requirements.txt
-
-See [`requirements.txt`](requirements.txt) in the repository root for the full pinned dependency list.
-
-> **Install note:** expect installation to take several minutes and several GB of free disk space — `torch`, `transformers`, and `bitsandbytes` are large, and the Qwen2.5 + NLLB-200 model weights add several more GB on first run.
-
----
-
-## Demo Video
-
-See [`docs/demo.mp4`](docs/demo.mp4) for the full demo recording.
-
----
-
-## Known Limitations & Future Scope
-
-**Limitations:**
-- Uses synthetic (Kaggle/Faker-generated) data rather than live commercial freight data.
-- Single-tenant deployment; not built for multi-brokerage isolation.
-- SQLite is used instead of a production-grade database (e.g. PostgreSQL).
-- LLM reasoning is limited to the locally-hosted Qwen2.5-3B/1.5B models — no external frontier-model fallback.
-
-**Future Scope:**
-- Integrate real-time freight-rate and AIS vessel-tracking data feeds.
-- Migrate to a production database (PostgreSQL/MySQL) with proper multi-tenant support.
-- Add push/email/SMS alerting for weather and customs risk events.
-- Expand the RAG knowledge base to ingest live regulatory-body publications automatically.
-
----
-
-## Acknowledgements
-
-This project was built as part of the **Infosys Springboard Internship — Batch 1**. Thanks to our mentor, MOHAMEDSIPLI M, for guidance and feedback throughout development.
