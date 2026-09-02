@@ -299,7 +299,7 @@ A sidebar status panel — **"🤖 Neural AI Model & GPU Status"** — shows liv
 
 ## 🛠️ Admin Dashboard
 
-![Admin Dashboard](docs/screenshots/admin_dashboard.jpeg)
+![Admin Dashboard](docs/screenshots./admin_dashboards.jpeg)
 
 ### 👑 Admin-only capabilities
 - 👥 User management & role assignment
@@ -311,11 +311,11 @@ A sidebar status panel — **"🤖 Neural AI Model & GPU Status"** — shows liv
 
 ## 🖼️ Screenshots / GIFs
 ### Login & Access
-![Sign In Page](screenshots/docs/sign%20in.png)
+![Sign In Page](docs/screenshots./sign%20in.png)
 *Secure sign-in screen with role-based demo credentials.*
 
 ### OTP Section
-![OTP Section](screenshots/otp%20section.png)
+![OTP Section](docs/screenshots./otp%20section.png)
 OTP verification provides secure authentication using a one-time password.
 
 ### Sign Up
