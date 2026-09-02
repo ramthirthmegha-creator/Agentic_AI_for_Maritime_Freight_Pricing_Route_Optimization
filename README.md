@@ -27,10 +27,13 @@
 - [🔐 Authentication, OTP & Security](#-authentication-otp--security)
 - [🛠️ Admin Dashboard](#️-admin-dashboard)
 - [🖼️ Screenshots / GIFs](#️-screenshots--gifs)
+- [🚀 Getting Started — Step-by-Step Setup Guide](#-getting-started--step-by-step-setup-guide)
+- [🔑 Secrets & Credentials (How to Create & Get Each One)](#-secrets--credentials-how-to-create--get-each-one)
 - [⚙️ Installation & Run Instructions](#️-installation--run-instructions-from-github)
-- [🔑 Secrets & Credentials](#-secrets--credentials)
+- [🧑‍💻 How to Use FreightQuote AI (User Walkthrough)](#-how-to-use-freightquote-ai-user-walkthrough)
 - [📦 requirements.txt](#-requirementstxt)
 - [🎬 Demo Video](#-demo-video)
+- [🩺 Troubleshooting / FAQ](#-troubleshooting--faq)
 - [🚧 Known Limitations & Future Scope](#-known-limitations--future-scope)
 - [🙏 Acknowledgements](#-acknowledgements)
 
@@ -62,8 +65,20 @@ Ocean-freight brokerages juggle port congestion, volatile fuel-linked pricing, c
 ### ✅ Solution Summary
 FreightQuote AI is an agentic decision-support platform for an ocean-freight brokerage. It monitors global ports, calculates dynamic freight quotes, benchmarks carriers, tracks weather and customs risk, and exposes an **LLM-powered copilot** that answers routing, pricing, weather, and compliance questions using **only** grounded database facts, live telemetry, and retrieved documents — never fabricated numbers. Nine specialised agents sit on top of a shared platform layer (authentication, RBAC, translation, alerting, admin tooling), all running inside a single Streamlit application launched from Google Colab.
 
-### 🏗️ Architecture Overview
+### 🔄 How the Pieces Fit Together (End-to-End Flow)
 
+1. **You sign up / log in** → the auth layer (`auth.py`) issues a JWT session scoped to your role (Admin, Broker, Dispatcher, or Customer).
+2. **The app boots two AI engines in the background** → Qwen2.5-3B-Instruct (the reasoning LLM) and NLLB-200 (the translator). A sidebar panel shows you when each is 🟢 Active.
+3. **You land on a role-scoped menu** of the 9 agents plus the AI Copilot — RBAC hides tabs you're not permitted to see.
+4. **Every agent follows the same internal pattern:**
+   - Pulls live rows from its SQLite table(s) (e.g. `ports`, `freight_quotes`, `carriers`).
+   - Runs a small benchmark of several classical ML models (Random Forest, Gradient Boosting, SVM, etc.) and picks the best performer.
+   - Renders interactive Plotly/Folium visuals plus a hands-on simulator (sliders/inputs you can tweak).
+   - Exposes an "Ask the AI" box scoped to that agent's domain.
+5. **The AI Copilot** (agent-agnostic chat) routes your free-text question through `intent_router.py` to the right agent's data, retrieves the relevant grounded facts (SQL rows, computed simulator output, or RAG-retrieved PDF passages), and only then asks the LLM to phrase an answer — the LLM is never allowed to invent numbers.
+6. **Admins** additionally see a dashboard for user management, system health, and an ML metrics ledger logged to the `ml_metrics` table.
+
+### 🏗️ Architecture Overview
 
 ![Architecture Diagram](docs/architecture-diagram.png)
 
@@ -284,7 +299,7 @@ A sidebar status panel — **"🤖 Neural AI Model & GPU Status"** — shows liv
         back to Login          Reset Password ──▶ back to Login
 ```
 
-> 🔒 OTP delivery and any credentials are configured via environment variables and are **never** committed to the repository — see the [🔑 Secrets & Credentials](#-secrets--credentials) section below.
+> 🔒 OTP delivery and any credentials are configured via environment variables and are **never** committed to the repository — see the [🔑 Secrets & Credentials](#-secrets--credentials-how-to-create--get-each-one) section below.
 
 ### 🛡️ RBAC Roles
 
@@ -388,6 +403,145 @@ Displays important alerts and updates related to freight operations and system a
 
 ---
 
+## 🚀 Getting Started — Step-by-Step Setup Guide
+
+This section is written for someone setting the project up **for the very first time**, with zero assumed context. There are two ways to run FreightQuote AI — pick one:
+
+| Path | Best for | Needs a GPU on your own machine? |
+|---|---|---|
+| **A. Google Colab** (recommended) | Anyone without a local GPU — this is how the team built and demoed it | ❌ No — Colab provides a free GPU |
+| **B. Local machine** | Developers who already have a CUDA-capable GPU (≥6GB VRAM) | ✅ Yes |
+
+### 🅰️ Path A — Run on Google Colab (recommended, no GPU needed)
+
+1. **Get the code onto Colab.**
+   - Open [Google Colab](https://colab.research.google.com/).
+   - `File → Open notebook → GitHub`, paste the repo URL, and open the project notebook (or upload the repo as a `.zip` and unzip it in a Colab cell with `!unzip`).
+2. **Turn on a GPU runtime.**
+   - `Runtime → Change runtime type → Hardware accelerator → GPU (T4 is enough)`.
+3. **Add your secrets to Colab (never hardcode them in the notebook).**
+   - Click the 🔑 **key icon** in the left sidebar of Colab ("Secrets").
+   - Add each variable listed in the [Secrets & Credentials](#-secrets--credentials-how-to-create--get-each-one) table below as a new secret (name must match exactly, e.g. `HF_TOKEN`).
+   - Toggle **"Notebook access"** on for each secret.
+   - At the top of the notebook, load them into the environment:
+     ```python
+     import os
+     from google.colab import userdata
+     for key in ["HF_TOKEN", "KAGGLE_USERNAME", "KAGGLE_KEY", "OTP_EMAIL_ADDRESS",
+                 "OTP_EMAIL_APP_PASSWORD", "JWT_SECRET_KEY", "ADMIN_EMAIL",
+                 "ADMIN_PASSWORD", "NGROK_AUTH_TOKEN"]:
+         os.environ[key] = userdata.get(key)
+     ```
+4. **Install dependencies** (first cell): `!pip install -r requirements.txt`
+5. **Seed the database** (first run only): `!python seed_data.py`
+6. **Start the tunnel**, then launch Streamlit:
+   ```python
+   !pip install pyngrok -q
+   from pyngrok import ngrok
+   ngrok.set_auth_token(os.environ["NGROK_AUTH_TOKEN"])
+   public_url = ngrok.connect(8501)
+   print("Open this URL:", public_url)
+   !streamlit run app.py &>/content/logs.txt &
+   ```
+   *(Cloudflare Tunnel works the same way if you'd rather avoid an ngrok account — see the note in the Secrets table.)*
+7. **Open the printed public URL** in your browser — that's your live app.
+
+### 🅱️ Path B — Run on your own machine
+
+Skip straight to [⚙️ Installation & Run Instructions](#️-installation--run-instructions-from-github) below — it covers the local `venv` + `.env` flow.
+
+### ✅ First-Login Checklist
+
+Once the app is open in your browser:
+1. Use the **seeded admin account** (`ADMIN_EMAIL` / `ADMIN_PASSWORD` from your `.env` or Colab secrets) to log in as Admin the first time.
+2. From the **Admin Dashboard**, create additional users and assign them roles (Broker, Dispatcher, Customer) so you can see the RBAC-scoped menus.
+3. Confirm the sidebar shows 🟢 **Active** for both the Qwen and NLLB engines before relying on AI answers — while 🟡 **Loading**, give it a minute (model weights are several GB and load once per session).
+4. Try the **AI Copilot** tab first with a simple question like *"Which port has the highest congestion index right now?"* — this is the fastest way to confirm the LLM, database, and grounding pipeline are all wired up correctly.
+
+---
+
+## 🔑 Secrets & Credentials (How to Create & Get Each One)
+
+All credentials are supplied via environment variables (locally through `.env`, or as Colab **Secrets** when run in Google Colab) and are **never** committed to the repository — only `.env.example` with empty/placeholder values is tracked.
+
+| Variable | 🎯 Purpose | 📍 Where to get it |
+|:---|:---|:---|
+| `HF_TOKEN` | HF token for Qwen2.5 weights | HF → Settings → Access Tokens |
+| `KAGGLE_USERNAME` / `KAGGLE_KEY` | Kaggle API creds for seeding | Kaggle → Account → New API Token |
+| `OTP_EMAIL_ADDRESS` | Mailbox that sends OTP emails | Dedicated project mailbox |
+| `OTP_EMAIL_APP_PASSWORD` | Gmail app password for SMTP | Google Account → Security → App Passwords (2FA req'd) |
+| `JWT_SECRET_KEY` | Signing key for session tokens | Generate locally (see note below) |
+| `ADMIN_EMAIL` | Seeded default admin email | Set by the team |
+| `ADMIN_PASSWORD` | Seeded default admin password | Set by the team (strong, unique) |
+| `NGROK_AUTH_TOKEN` | Token to expose app via ngrok | ngrok.com → Your Authtoken |
+
+### 🪜 Step-by-step: creating each secret from scratch
+
+**1. `HF_TOKEN` (Hugging Face token — needed to download Qwen2.5 & NLLB-200 weights)**
+1. Create a free account at [huggingface.co](https://huggingface.co/join).
+2. Go to **Settings → Access Tokens** (`huggingface.co/settings/tokens`).
+3. Click **New token**, give it a name (e.g. `freightquote-ai`), set the role to **Read**, and click **Generate**.
+4. Copy the token immediately (`hf_...`) — you can't view it again later, only regenerate it.
+5. Some gated model pages (if any are used) may also require you to click **"Agree and access repository"** on the model's Hugging Face page while logged in.
+
+**2. `KAGGLE_USERNAME` / `KAGGLE_KEY` (only needed if you re-seed data from Kaggle datasets)**
+1. Create a free account at [kaggle.com](https://www.kaggle.com/).
+2. Go to **Account → Settings** (click your profile picture → *Settings*).
+3. Scroll to the **API** section and click **Create New Token** — this downloads a `kaggle.json` file.
+4. Open that file; it contains `{"username": "...", "key": "..."}`. Use those two values as `KAGGLE_USERNAME` and `KAGGLE_KEY`.
+
+**3. `OTP_EMAIL_ADDRESS` + `OTP_EMAIL_APP_PASSWORD` (the mailbox that sends OTP codes to users)**
+1. Create (or reuse) a **dedicated project Gmail account** — don't use a personal inbox.
+2. Turn on **2-Step Verification**: Google Account → **Security → 2-Step Verification → Get started**.
+3. Once 2FA is on, go to **Security → App passwords** (`myaccount.google.com/apppasswords`).
+4. Select app: *Mail*, select device: *Other (custom name)* → type `FreightQuote AI` → **Generate**.
+5. Google shows a 16-character password (e.g. `abcd efgh ijkl mnop`) — copy it with spaces removed as `OTP_EMAIL_APP_PASSWORD`. This is **not** the account's normal login password.
+6. Set `OTP_EMAIL_ADDRESS` to the full Gmail address of this mailbox.
+
+**4. `JWT_SECRET_KEY` (signs and verifies login session tokens)**
+- This one you generate yourself, locally — it's not obtained from any website. Run:
+  ```bash
+  python -c "import secrets;print(secrets.token_hex(32))"
+  ```
+- Copy the printed 64-character hex string as the value. Treat it like a password — anyone with this key could forge valid login sessions.
+
+**5. `ADMIN_EMAIL` / `ADMIN_PASSWORD` (the first account you log in with)**
+- Pick any email-shaped string and a strong password yourself — these just seed the first Admin row in the database via `seed_data.py`. Change the default demo password before sharing the app with anyone else.
+
+**6. `NGROK_AUTH_TOKEN` (only needed if you use ngrok instead of Cloudflare Tunnel to expose the Colab app publicly)**
+1. Create a free account at [ngrok.com](https://ngrok.com/).
+2. Go to the dashboard's **"Your Authtoken"** page (`dashboard.ngrok.com/get-started/your-authtoken`).
+3. Copy the token shown there.
+4. *(Alternative: skip ngrok entirely and use Cloudflare Tunnel, which needs no account for quick/ephemeral tunnels — run `cloudflared tunnel --url http://localhost:8501` instead.)*
+
+### 📝 Putting it all together locally
+
+```bash
+cp .env.example .env
+```
+Then open `.env` in a text editor and paste in each value you generated above:
+```env
+HF_TOKEN=hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+KAGGLE_USERNAME=your_kaggle_username
+KAGGLE_KEY=your_kaggle_key
+OTP_EMAIL_ADDRESS=freightquote.otp@gmail.com
+OTP_EMAIL_APP_PASSWORD=abcdefghijklmnop
+JWT_SECRET_KEY=your_generated_64_char_hex_string
+ADMIN_EMAIL=admin@freightquote.ai
+ADMIN_PASSWORD=Choose_A_Strong_Unique_Password!
+NGROK_AUTH_TOKEN=your_ngrok_token
+```
+
+> 📝 **Notes:**
+> - `OTP_EMAIL_ADDRESS` / `OTP_EMAIL_APP_PASSWORD`: use a dedicated project/team mailbox, not a personal one. The app password is **not** your real Gmail password.
+> - `JWT_SECRET_KEY`: generate with `python -c "import secrets;print(secrets.token_hex(32))"`.
+> - `ADMIN_PASSWORD`: use a strong, unique value — don't ship the `admin123` demo default.
+> - `NGROK_AUTH_TOKEN`: only needed if using ngrok instead of Cloudflare Tunnel.
+
+> ⚠️ **If any token or password above is ever accidentally committed, treat it as compromised:** revoke/rotate it immediately (Hugging Face/Kaggle: delete & regenerate the token; Google: revoke the App Password) — do not just delete the line in a later commit, since it remains in git history.
+
+---
+
 ## ⚙️ Installation & Run Instructions (from GitHub)
 
 ```bash
@@ -436,28 +590,38 @@ Since the platform is designed to run from **Google Colab** with Streamlit tunne
 
 ---
 
-## 🔑 Secrets & Credentials
+## 🧑‍💻 How to Use FreightQuote AI (User Walkthrough)
 
-All credentials are supplied via environment variables (locally through `.env`, or as Colab **Secrets** when run in Google Colab) and are **never** committed to the repository — only `.env.example` with empty/placeholder values is tracked.
+### 1. Create an account or log in
+- On the landing page, choose **Sign Up** if you're new: fill in name, email, password, and set up a security question (used for password recovery if OTP email fails).
+- Existing users choose **Login** and enter email + password.
+- Forgot your password? Click **Forgot Password** → an OTP is emailed to your registered address → enter it to reset, or fall back to your security question if the OTP doesn't arrive.
+- After login, you land on the role-scoped **main menu** in the sidebar (`streamlit-option-menu`).
 
-| Variable | 🎯 Purpose | 📍 Where to get it |
-|:---|:---|:---|
-| `HF_TOKEN` | HF token for Qwen2.5 weights | HF → Settings → Access Tokens |
-| `KAGGLE_USERNAME` / `KAGGLE_KEY` | Kaggle API creds for seeding | Kaggle → Account → New API Token |
-| `OTP_EMAIL_ADDRESS` | Mailbox that sends OTP emails | Dedicated project mailbox |
-| `OTP_EMAIL_APP_PASSWORD` | Gmail app password for SMTP | Google Account → Security → App Passwords (2FA req'd) |
-| `JWT_SECRET_KEY` | Signing key for session tokens | Generate locally (see note below) |
-| `ADMIN_EMAIL` | Seeded default admin email | Set by the team |
-| `ADMIN_PASSWORD` | Seeded default admin password | Set by the team (strong, unique) |
-| `NGROK_AUTH_TOKEN` | Token to expose app via ngrok | ngrok.com → Your Authtoken |
+### 2. Check system status
+- Glance at the sidebar's **"🤖 Neural AI Model & GPU Status"** panel. Wait for both engines to show 🟢 **Active** before asking the copilot anything — while 🟡 **Loading**, ML-agent charts still work (they don't need the LLM), but chat answers will be slower or unavailable.
 
-> 📝 **Notes:**
-> - `OTP_EMAIL_ADDRESS` / `OTP_EMAIL_APP_PASSWORD`: use a dedicated project/team mailbox, not a personal one. The app password is **not** your real Gmail password.
-> - `JWT_SECRET_KEY`: generate with `python -c "import secrets;print(secrets.token_hex(32))"`.
-> - `ADMIN_PASSWORD`: use a strong, unique value — don't ship the `admin123` demo default.
-> - `NGROK_AUTH_TOKEN`: only needed if using ngrok instead of Cloudflare Tunnel.
+### 3. Explore a specialised agent
+Pick any tab from the 9 agents (e.g. **💰 Dynamic Freight Pricing Engine**):
+- Review the auto-generated charts (they reflect the current state of the SQLite database).
+- Open the **model-comparison table** to see which classical ML model won the benchmark and why.
+- Use the **simulator** (sliders/number inputs specific to that agent) to test "what-if" scenarios — e.g. change bunker fuel price or vessel speed and watch the projected cost/margin update.
+- Scroll to that agent's **AI advisory Q&A box** and ask a domain-specific question in plain English, e.g. *"Why is the BAF surcharge higher on the Shanghai–Rotterdam lane this week?"*
 
-> ⚠️ **If any token or password above is ever accidentally committed, treat it as compromised:** revoke/rotate it immediately (Hugging Face/Kaggle: delete & regenerate the token; Google: revoke the App Password) — do not just delete the line in a later commit, since it remains in git history.
+### 4. Ask the AI Copilot (cross-agent chat)
+- Open the **AI Copilot** tab for a general chat interface that isn't tied to one agent.
+- Type a natural-language question — `intent_router.py` figures out which agent's data is relevant, retrieves grounded facts, and the LLM phrases a grounded answer citing those facts.
+- If your question needs multilingual output, use the **🌐 Translation Studio** to translate the copilot's answer or a source document into 20+ languages offline.
+
+### 5. Work with documents
+- **📄 Bill of Lading & OCR Studio**: upload a shipping document image/PDF, let OCR extract fields, review the fraud-detection flag, then use the 10-parameter builder to generate a clean digital Bill of Lading (PDF output via ReportLab/FPDF).
+- **📚 PDF SOP & RAG Studio**: upload your own customs policy or SOP PDF; it's auto-indexed into the retrieval knowledge base, after which you can ask questions and get answers grounded in that specific document, with a relevance-scored source list.
+
+### 6. (Admins only) Manage the platform
+- Open the **Admin Dashboard** to add/delete/promote/demote/unlock users, monitor DB and model health, review the ML metrics ledger, and audit chat history across all users.
+
+### 7. Log out
+- Use the sidebar **Logout** button to end your JWT session cleanly.
 
 ---
 
@@ -472,6 +636,19 @@ See [`requirements.txt`](requirements.txt) in the repository root for the full p
 ## 🎬 Demo Video
 
 ▶️ See [`demo.mp4`](demo.mp4) for the full demo recording.
+
+---
+
+## 🩺 Troubleshooting / FAQ
+
+| Symptom | Likely cause & fix |
+|---|---|
+| Sidebar status stuck on 🟡 Loading | Model weights are still downloading/loading into VRAM — this can take a few minutes on first run per session; check the Colab cell output/logs for download progress. |
+| `CUDA out of memory` or the LLM silently gets slower | Not enough VRAM for the 3B model — the app should auto-degrade to Qwen2.5-1.5B-Instruct; if it doesn't, restart the runtime and re-run cells in order. |
+| OTP email never arrives | Double-check `OTP_EMAIL_ADDRESS`/`OTP_EMAIL_APP_PASSWORD` are correct, that 2-Step Verification is enabled on that Gmail account, and that you generated an **App Password** (not the account's normal password). Also check spam folders. |
+| ngrok URL says "tunnel not found" or expires quickly | Free ngrok tunnels are ephemeral and reset on reconnect — reconnect and use the newly printed URL, or switch to Cloudflare Tunnel for a more persistent option. |
+| `sqlite3.OperationalError: database is locked` | Multiple processes writing at once — the DB layer uses WAL mode to minimize this, but avoid running `seed_data.py` while the app is already live. |
+| Can't see the Admin Dashboard tab | Your logged-in account isn't seeded/promoted as Admin — log in with `ADMIN_EMAIL`/`ADMIN_PASSWORD`, or have an existing Admin promote your account from the Admin Dashboard. |
 
 ---
 
@@ -497,7 +674,5 @@ See [`requirements.txt`](requirements.txt) in the repository root for the full p
 
 This project was built as part of the **Infosys Springboard Internship — Batch 1**.
 💐 Thanks to our mentor, **MOHAMEDSIPLI M**, for guidance and feedback throughout development.
-
-
 
 </div>
