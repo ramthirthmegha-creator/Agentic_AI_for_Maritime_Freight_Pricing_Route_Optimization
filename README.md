@@ -310,18 +310,81 @@ A sidebar status panel — **"🤖 Neural AI Model & GPU Status"** — shows liv
 ---
 
 ## 🖼️ Screenshots / GIFs
+### Login & Access
+![Sign In Page](screenshots/docs/sign%20in.png)
+*Secure sign-in screen with role-based demo credentials.*
 
-| 🔐 Login Screen | 📊 Main Dashboard |
-|---|---|
-| ![Login](docs/screenshots/login.jpeg) | ![Dashboard](docs/screenshots/dashboard.jpeg) |
+### OTP Section
+![OTP Section](screenshots/otp%20section.png)
+OTP verification provides secure authentication using a one-time password.
 
-| 🤖 Agent Tab Example | 💬 AI Copilot |
-|---|---|
-| ![Agent](docs/screenshots/agent-example.jpeg) | ![Copilot](docs/screenshots/copilot-chat.jpeg) |
+### Sign Up
+![Sign Up](screenshots/sign%20up.png)
+The Sign Up page allows new users to create an account securely.
 
-| 🛠️ Admin Dashboard |
-|---|
-| ![Admin](docs/screenshots/admin_dashboard.jpeg) |
+### Admin Dashboard
+![Admin Dashboard](screenshots/admin%20dashboards.png)
+*Command-center overview of shipments, quotes, and platform-wide KPIs.*
+
+### AI Copilot
+![AI Copilot](screenshots/AI%20Copilot.png)
+*Grounded chat assistant answering questions using live freight data.*
+
+### Route Optimization (Agent 1)
+![Agent 1 Route](screenshots/agent%201%20route.png)
+*Interactive port-to-port route mapping and optimization analysis.*
+
+### Dynamic Freight Pricing (Agent 2)
+![Agent 2 Spot Quotes](screenshots/agent%202%20spot%20quotes.png
+*Real-time dynamic pricing engine for freight quotes.*
+
+### Carrier Performance (Agent 3)
+![Agent 3 Carriers](screenshots/agent%203%20carriers.png)
+*Carrier capacity, reliability, and performance analytics.*
+
+### Weather & Freight Risk (Agent 4)
+![Agent 4 Weather Risk](screenshots/agent%204%20weather%20risk.png)
+*Live port weather overlays and shipment risk scoring.*
+
+### Margin Predictor (Agent 5)
+![Agent 5 Margin Predictor](screenshots/agent%205%20margin%20predictor.png)
+*Predicted yield and margin outlook across active shipments.*
+
+### Customs & Tariffs (Agent 6)
+![Agent 6 Customs & Tariff](screenshots/agent%206%20customs%20%26%20tariff.png)
+*Customs, tax, and compliance guidance for cross-border shipments.*
+
+### Digital Bill of Lading (Agent 7)
+![Agent 7 Docs](screenshots/agent%207%20docs.png)
+*Automated generation and management of shipping documents.*
+
+### Alerts & Translation (Agent 8)
+![Agent 8 Translation](screenshots/agent%208%20translation.png)
+*Real-time incident alerts alongside 20+ language translation support.*
+
+### PDF SOP / RAG Studio (Agent 9)
+![Agent 9 PDF RAG Studio](screenshots/agent%209%20pdf%20rag%20studio.png)
+*Upload and query customs/SOP PDFs using retrieval-augmented search.*
+
+### Notifications
+![Notifications](screenshots/notifications.png)
+Displays important alerts and updates related to freight operations and system activities.
+
+### Anomaly Scanner
+![Anomaly Scanner](screenshots/anomaly%20scanner.png)
+*Isolation Forest–based detection of anomalies across shipments and ports.*
+
+### Digital Twin Simulation
+![Digital Twin](screenshots/digital%20twin.png)
+*Monte Carlo trade-stress simulation of the global freight network.*
+
+### Knowledge Graph
+![Knowledge Graph](screenshots/knowledge%20graph.png)
+*Interactive graph linking ports, carriers, shipments, and documents.*
+
+### Data Feed Center
+![Data Feed Center](screenshots/data%20feed%20center.png)
+*Manual and bulk CSV data ingestion into the live database.*
 
 ---
 
