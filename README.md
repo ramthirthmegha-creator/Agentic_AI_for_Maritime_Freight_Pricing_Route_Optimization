@@ -21,8 +21,11 @@
 ---
 
 ## 📑 Table of Contents
+- [⚡ Quick Start (TL;DR)](#-quick-start-tldr)
 - [👥 Program & Team Context](#-program--team-context)
 - [🧭 Overall Project Explanation](#-overall-project-explanation)
+- [🧭 Project Evolution — What Each Milestone Added](#-project-evolution--what-each-milestone-added)
+- [🧩 Main Modules](#-main-modules)
 - [🤖 The 9 Specialised Agents](#-the-9-specialised-agents)
 - [🔐 Authentication, OTP & Security](#-authentication-otp--security)
 - [🛠️ Admin Dashboard](#️-admin-dashboard)
@@ -30,12 +33,32 @@
 - [🚀 Getting Started — Step-by-Step Setup Guide](#-getting-started--step-by-step-setup-guide)
 - [🔑 Secrets & Credentials (How to Create & Get Each One)](#-secrets--credentials-how-to-create--get-each-one)
 - [⚙️ Installation & Run Instructions](#️-installation--run-instructions-from-github)
+- [🐳 Running with Docker](#-running-with-docker)
+- [📁 Project Structure](#-project-structure)
 - [🧑‍💻 How to Use FreightQuote AI (User Walkthrough)](#-how-to-use-freightquote-ai-user-walkthrough)
-- [📦 requirements.txt](#-requirementstxt)
+- [📦 requirements.txt (Strict, Frozen Dependencies)](#-requirementstxt-strict-frozen-dependencies)
 - [🎬 Demo Video](#-demo-video)
 - [🩺 Troubleshooting / FAQ](#-troubleshooting--faq)
+- [📖 Glossary (Simple Terms)](#-glossary-simple-terms)
 - [🚧 Known Limitations & Future Scope](#-known-limitations--future-scope)
 - [🙏 Acknowledgements](#-acknowledgements)
+
+---
+
+## ⚡ Quick Start (TL;DR)
+
+For anyone who just wants the fastest path from zero to a running app on their own machine — full details, secrets setup, and the Colab path are further down.
+
+```bash
+git clone https://github.com/your-org/FreightQuote-AI.git
+cd FreightQuote-AI && python -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+streamlit run app/main.py
+```
+
+> 🪟 **Windows users:** activate with `venv\Scripts\activate` instead of `source venv/bin/activate`.
+> 🔑 Before the last command will fully work, copy `.env.example` to `.env` and fill in the secrets described in [🔑 Secrets & Credentials](#-secrets--credentials-how-to-create--get-each-one) — otherwise auth/OTP/LLM features will fail even though the app starts.
+> 📓 No local GPU? Use the [Google Colab path](#-getting-started--step-by-step-setup-guide) instead — it's how this project is actually designed to run the Qwen LLM.
 
 ---
 
@@ -64,6 +87,37 @@ Ocean-freight brokerages juggle port congestion, volatile fuel-linked pricing, c
 
 ### ✅ Solution Summary
 FreightQuote AI is an agentic decision-support platform for an ocean-freight brokerage. It monitors global ports, calculates dynamic freight quotes, benchmarks carriers, tracks weather and customs risk, and exposes an **LLM-powered copilot** that answers routing, pricing, weather, and compliance questions using **only** grounded database facts, live telemetry, and retrieved documents — never fabricated numbers. Nine specialised agents sit on top of a shared platform layer (authentication, RBAC, translation, alerting, admin tooling), all running inside a single Streamlit application launched from Google Colab.
+
+### 🧭 Project Evolution — What Each Milestone Added
+
+The platform was built incrementally across the internship. Each milestone added a working layer on top of the last, and the final app documented in this README is the sum of all four — you only need to run the current, integrated app; the milestones below are **not** separate apps to set up.
+
+| Milestone | Focus | What Was Delivered |
+|---|---|---|
+| **Milestone 1** | Authentication & Access | Secure sign-in, account registration, and password recovery via Security Question **or** Email OTP (6-digit, time-limited). Formed the entry point for every later milestone. |
+| **Milestone 2** | Core Platform & First Agents | The first working version of the freight platform: Customer & Admin dashboards, and the first 3 AI agents — **Freight Pricing**, **Route/Weather Risk**, and **Carrier Audit** — plus an early AI Copilot. |
+| **Milestone 3** | RAG Knowledge Center | Added a Retrieval-Augmented Generation pipeline: 50+ generated logistics SOP/customs/insurance PDFs, chunked and indexed in FAISS, searchable through a dedicated semantic-search dashboard with source-cited answers. This pipeline now powers **Agent 9: PDF RAG Studio**. |
+| **Milestone 4** | Full Integration | Everything above was merged into **one connected application**, expanded from 3 agents to **9 specialised agents**, added role-based access control (RBAC) with multiple roles, a full Admin Dashboard, Knowledge Graph, Digital Twin simulation, Anomaly Scanner, Notifications, and multilingual support. This is the current, complete state of the platform. |
+
+### 🧩 Main Modules
+
+| Module | Purpose |
+|---|---|
+| 🤖 AI Copilot | Answers freight-related questions using retrieved application data |
+| 🗺 Route Intelligence | Analyses ports, congestion and possible routes |
+| 💰 Freight Pricing | Estimates and compares freight quote components |
+| 🚢 Carrier Analytics | Reviews carrier reliability and capacity |
+| 🌦 Weather Risk | Evaluates weather conditions affecting port operations |
+| 📈 Margin Intelligence | Analyses quote profitability and margin behaviour |
+| 🛃 Customs Intelligence | Supports customs and HS-code related risk analysis |
+| 📄 Document Generator | Creates freight quote and Bill of Lading documents |
+| 🌐 Translation | Translates shipping documents and operational text |
+| 📚 PDF RAG | Searches uploaded customs and SOP documents |
+| 🚨 Notifications | Displays shipment, weather and customs incidents |
+| 🕸 Knowledge Graph | Visualizes relationships between freight entities |
+| 🧪 Digital Twin | Simulates changes across the freight network |
+| 🔎 Anomaly Scanner | Finds unusual patterns in operational data |
+| 📡 Data Feed Center | Provides operational data review/export functionality |
 
 ### 🔄 How the Pieces Fit Together (End-to-End Flow)
 
@@ -261,6 +315,9 @@ A sidebar status panel — **"🤖 Neural AI Model & GPU Status"** — shows liv
 | 🔤 **HS Code** | Harmonized System Code — the international classification code for traded goods, used for customs/duty assessment |
 | 🔤 **Dwell Time** | The time a container spends sitting at a port terminal before being loaded/moved |
 | 🔤 **Bill of Lading (BoL)** | The legal shipping document issued by a carrier acknowledging receipt of cargo and detailing the terms of transport |
+| 🔤 **RAG** | Retrieval-Augmented Generation — the AI looks up real documents before answering, instead of guessing |
+| 🔤 **RBAC** | Role-Based Access Control — different users see different features depending on their assigned role |
+| 🔤 **OTP** | One-Time Password — a temporary, time-limited code sent to your email to verify it's really you |
 
 ---
 
@@ -590,6 +647,74 @@ Since the platform is designed to run from **Google Colab** with Streamlit tunne
 
 ---
 
+## 🐳 Running with Docker
+
+If you'd rather not manage a local Python environment, the app can also run in a container. This assumes a `Dockerfile` is present at the repository root (add one if it isn't yet).
+
+```bash
+# 1️⃣ Build the image
+docker build -t freightquote-ai .
+
+# 2️⃣ Run the container, passing your .env file through and mapping the Streamlit port
+docker run --env-file .env -p 8501:8501 freightquote-ai
+```
+
+Then open **http://localhost:8501** in your browser. Notes:
+- The `--env-file .env` flag loads all the secrets described in [🔑 Secrets & Credentials](#-secrets--credentials-how-to-create--get-each-one) into the container — build the `.env` file first.
+- GPU access inside Docker (for faster LLM inference) requires the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) and running with `--gpus all`; without it, the app falls back to CPU inference (slower, but functional).
+- For first-time setup, run the database seed step once, either by baking it into the image build or by `docker exec`-ing into the running container: `docker exec -it <container_id> python seed_data.py`.
+
+---
+
+## 📁 Project Structure
+
+```text
+freightquote-ai/
+│
+├── app/
+│   └── main.py              # Streamlit entry point (or app.py at repo root, depending on layout)
+│
+├── admin_dash.py             # Admin Dashboard
+├── ai_copilot.py             # Cross-agent AI Copilot / intent router
+├── profile.py                # User profile management
+│
+├── agent1_route.py           # Port & Route Intelligence
+├── agent2_pricing.py         # Dynamic Freight Pricing
+├── agent3_carrier.py         # Carrier Performance
+├── agent4_weather.py         # Weather & Harbor Risk
+├── agent5_margin.py          # Freight Margin Intelligence
+├── agent6_customs.py         # Customs & HS Code Intelligence
+├── agent7_docs.py            # Freight Document Generator (OCR + Bill of Lading)
+├── agent8_translation.py     # Maritime Translation (NLLB-200)
+├── agent9_pdf_rag.py         # PDF RAG Studio
+│
+├── anomaly_scanner.py        # Isolation Forest anomaly detection
+├── digital_twin.py           # Monte Carlo network simulation
+├── knowledge_graph.py        # Entity relationship visualization
+├── notifications.py          # Operational incident alerts
+├── data_feed_center.py       # Manual/bulk CSV data ingestion
+│
+├── auth.py                   # Signup, login, OTP, password recovery
+├── rbac.py                   # Role-based access control
+├── db.py                     # SQLite connection layer (WAL mode, pooling)
+├── seed_data.py               # Database seeding (Kaggle/Faker demo data)
+├── llm_engine.py              # Qwen2.5-3B/1.5B model loading & inference
+├── translation_engine.py      # NLLB-200 wrapper
+├── rag_engine.py               # FAISS + sentence-transformers RAG pipeline
+├── model_server.py             # Shared model-serving utilities
+│
+├── config.py                   # App configuration / env var loading
+├── ui_theme.py                 # Streamlit theming
+├── requirements.txt             # Frozen, pinned dependencies
+├── .env.example                  # Placeholder env vars (safe to commit)
+├── Dockerfile                     # Container build definition
+└── docs/                           # Architecture diagram + screenshots
+```
+
+> 📝 Adjust this tree to match your actual repository layout before publishing — it's meant as a map for new contributors, not a guarantee of exact filenames.
+
+---
+
 ## 🧑‍💻 How to Use FreightQuote AI (User Walkthrough)
 
 ### 1. Create an account or log in
@@ -625,9 +750,19 @@ Pick any tab from the 9 agents (e.g. **💰 Dynamic Freight Pricing Engine**):
 
 ---
 
-## 📦 requirements.txt
+## 📦 requirements.txt (Strict, Frozen Dependencies)
 
-See [`requirements.txt`](requirements.txt) in the repository root for the full pinned dependency list.
+See [`requirements.txt`](requirements.txt) in the repository root for the full pinned dependency list. To keep builds reproducible, this file must stay **strict**:
+
+- **Exact, pinned versions only** — every line looks like `package==1.2.3`, never `package>=1.2.3` or an unpinned `package`. This guarantees anyone who clones the repo gets byte-for-byte the same environment you tested with.
+- **No redundant or unused packages** — only libraries the app actually imports at runtime belong here; leftover packages from experimentation should be removed before committing.
+- **Regenerate it from your working virtual environment**, don't hand-edit version numbers:
+  ```bash
+  # inside your activated venv, after confirming the app runs correctly
+  pip freeze > requirements.txt
+  ```
+- **Review the diff before committing** — `pip freeze` captures everything installed in the environment, including transitive dependencies pulled in by tools you used only for development (e.g. Jupyter, linters). Strip anything that isn't actually needed to run `streamlit run app/main.py`.
+- **Re-freeze whenever you add or upgrade a dependency**, and commit the updated `requirements.txt` in the same PR as the code change that needed it, so the two never drift apart.
 
 > ⏳ **Install note:** expect installation to take several minutes and several GB of free disk space — `torch`, `transformers`, and `bitsandbytes` are large, and the Qwen2.5 + NLLB-200 model weights add several more GB on first run.
 
@@ -649,6 +784,28 @@ See [`requirements.txt`](requirements.txt) in the repository root for the full p
 | ngrok URL says "tunnel not found" or expires quickly | Free ngrok tunnels are ephemeral and reset on reconnect — reconnect and use the newly printed URL, or switch to Cloudflare Tunnel for a more persistent option. |
 | `sqlite3.OperationalError: database is locked` | Multiple processes writing at once — the DB layer uses WAL mode to minimize this, but avoid running `seed_data.py` while the app is already live. |
 | Can't see the Admin Dashboard tab | Your logged-in account isn't seeded/promoted as Admin — log in with `ADMIN_EMAIL`/`ADMIN_PASSWORD`, or have an existing Admin promote your account from the Admin Dashboard. |
+
+---
+
+## ❓ Quick FAQ
+
+**Q: Do I need a GPU to run this?**
+A local LLM (Qwen) works best with a GPU, which is why the project is designed to run on Google Colab. It can fall back to a smaller model or CPU mode if no GPU is available, though responses will be slower.
+
+**Q: Is the data real?**
+No — ports, shipments, carriers, and customer data are generated for demo purposes. Only the live weather data (from Open-Meteo) is real-time.
+
+**Q: Can the AI Copilot make up numbers?**
+It's designed not to. The Copilot is instructed to answer only from data it can retrieve (the database or uploaded PDFs) and to say so clearly when it doesn't have enough information.
+
+**Q: What happens if the 3B model can't load?**
+The app automatically falls back to the smaller Qwen2.5-1.5B-Instruct model so the Copilot keeps working, just with slightly less detailed responses.
+
+**Q: Why does the README talk about "Milestones" — do I need to run them separately?**
+No. Milestones 1–3 were development stages; everything they built is already merged into the single, current application described in this README. You only need to run the current app once, following the [Getting Started guide](#-getting-started--step-by-step-setup-guide).
+
+**Q: The Quick Start command says `streamlit run app/main.py` but I only see `app.py` at the repo root — which is right?**
+Use whichever path actually exists in your clone. Some layouts keep the entry point at the repo root (`app.py`), others nest it under an `app/` package (`app/main.py`) — check your [Project Structure](#-project-structure) and adjust the run command accordingly.
 
 ---
 
